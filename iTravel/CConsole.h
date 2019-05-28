@@ -2,9 +2,9 @@
 #ifndef Console_H_ZYN
 #define Console_H_ZYN
 #include "pch.h"
-#include "gdiplus.h"
+#include <gdiplus.h>
+//#include "constStr.h"
 #pragma comment(lib,"Gdiplus.lib")
-//Consider to use VT100 to instead API calls.
 //	CConsole Class 
 /*
 											CConsole
@@ -46,89 +46,93 @@
 	__wstring2string()			宽窄字符串转换函数
 	operator<<()				把其他类型格式化为字符串后调用WriteText()
 */
-class CConsole {
-public:
-	using WinHandle = HWND;
-	using Handle = HANDLE;
-	using WinRect = tagRECT;
-private:
-	//多线程部分
-	void __displayImageThread(HWND hwnd);
-	std::condition_variable flag;
-	std::mutex lockk;
-	std::unique_lock<std::mutex> tlock;
-	std::thread drawThread;
-	bool tContinueDrawing = true,
-		isLastThreadRunning = false;
-	//gdiplus
-	ULONG_PTR token;
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	std::wstring ImgFilename;
-	COORD WhereTodraw{ 0,0 };
-	//输出缓冲区
-	HANDLE __createNewScreen();
-	std::string output_buffer;
-	HANDLE hConsole = nullptr,
-		background, foreground = nullptr;
-	//窗口
-	static const short window_width = 100, window_len = 200;
-	short nowx = 0, nowy = 0;
-	std::string ConsoleTitle;
-	short RectAttr = BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
-	short InputBackground = BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
-	//蓝底白字
-	//宽窄字符转换
-	std::wstring __string2wstring(const std::string&);
-	std::string __wstring2string(const std::wstring&);
-	void __setDefaultColor();
+namespace std{
+	class CConsole {
+	public:
+		using WinHandle = HWND;
+		using Handle = HANDLE;
+		using WinRect = tagRECT;
+	private:
+		//多线程部分
+		void __displayImageThread(HWND hwnd);
+		std::condition_variable flag;
+		std::mutex lockk;
+		std::unique_lock<std::mutex> tlock;
+		std::thread drawThread;
+		bool tContinueDrawing = true,
+			isLastThreadRunning = false;
+		//gdiplus
+		ULONG_PTR token;
+		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+		std::wstring ImgFilename;
+		COORD WhereTodraw{ 0,0 };
+		//输出缓冲区
+		HANDLE __createNewScreen();
+		std::string output_buffer;
+		HANDLE hConsole = nullptr,
+			background, foreground = nullptr;
+		//窗口
+		static const short window_width = 100, window_len = 200;
+		short nowx = 0, nowy = 0;
+		std::string ConsoleTitle;
+		short RectAttr = BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		short InputBackground = BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
+		//蓝底白字
+		//宽窄字符转换
+		std::wstring __string2wstring(const std::string&);
+		std::string __wstring2string(const std::wstring&);
+		void __setDefaultColor();
 
-	void __WriteText(const std::string&);
-public:
-	std::wstring string2wstring(const std::string& str) {
-		return __string2wstring(str);
-	}
-	std::string wstring2string(const std::wstring& wstr) {
-		return __wstring2string(wstr);
-	}
-	using WinHandle = HWND;
-	using WinRect = tagRECT;
-	CConsole(const std::string&);
-	CConsole() = delete;
-	CConsole(const CConsole&) = delete;
-	CConsole(const CConsole&&) = delete;
-	CConsole& operator=(const CConsole&) = delete;
-	CConsole& operator=(const CConsole&&) = delete;
-	void init(short, short);
-	~CConsole() = default;
-	void displayImage(const std::wstring&, const COORD& where);
-	void putCursor(COORD);
-	void putCursor(COORD, HANDLE);
-	void Dialog(const std::string &);
-	void putCursorToEnd();
-	COORD DrawRectangle(const COORD&, const COORD&);
-	void setRectangleAttribute(short = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED, short = BACKGROUND_BLUE);
-	void stopDrawingThread();
-	//void putCursorToBegin();
-	void getCurrentCursor();
-	void getCurrentCursor(HANDLE);
-	bool ResizeWindow();
-	void updateScreen();
-	//void ResumeDefaultFontColor();
-	void setColorInput(short = 0, short = 0);
-	void makeColorfulInput();
-	void ClearOutputBuffer();
-	void ClearScreen();
-	void WriteText(const std::string&);
-	
-	std::string InputPassword(const char = '*', const size_t = 16);
-	CConsole& operator<<(const std::string&);
+		void __WriteText(const std::string&);
+	public:
+		std::wstring string2wstring(const std::string& str) {
+			return __string2wstring(str);
+		}
+		std::string wstring2string(const std::wstring& wstr) {
+			return __wstring2string(wstr);
+		}
+		using WinHandle = HWND;
+		using WinRect = tagRECT;
+		CConsole(const std::string&);
+		CConsole() = delete;
+		CConsole(const CConsole&) = delete;
+		CConsole(const CConsole&&) = delete;
+		CConsole& operator=(const CConsole&) = delete;
+		CConsole& operator=(const CConsole&&) = delete;
+		void init(short, short);
+		~CConsole() = default;
+		void displayImage(const std::wstring&, const COORD& where);
+		void putCursor(COORD);
+		void putCursor(COORD, HANDLE);
+		void Dialog(const std::string &);
+		void putCursorToEnd();
+		COORD DrawRectangle(const COORD&, const COORD&);
+		void setRectangleAttribute(short = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED, short = BACKGROUND_BLUE);
+		void stopDrawingThread();
+		//void putCursorToBegin();
+		void getCurrentCursor();
+		void getCurrentCursor(HANDLE);
+		bool ResizeWindow();
+		void updateScreen();
+		//void ResumeDefaultFontColor();
+		void setColorInput(short = 0, short = 0);
+		void makeColorfulInput();
+		void ClearOutputBuffer();
+		void ClearScreen();
+		void WriteText(const std::string&);
 
-	CConsole& operator<<(const int);
-	CConsole& operator<<(const double);
-	CConsole& operator<<(const long long);
-	//兼容ostream的endl
-	CConsole& operator<<(std::ostream& (*)(std::ostream&));
-	tagRECT getCurrentWindowInfo();
-	HANDLE getCurrentConsoleHandle();
-};
+		std::string InputPassword(const char = '*', const size_t = 16);
+		CConsole& operator<<(const std::string&);
+
+		CConsole& operator<<(const int);
+		CConsole& operator<<(const double);
+		CConsole& operator<<(const long long);
+		CConsole& operator<<(const size_t);
+		//兼容ostream的endl
+		CConsole& operator<<(std::ostream& (*)(std::ostream&));
+		tagRECT getCurrentWindowInfo();
+		HANDLE getCurrentConsoleHandle();
+	};
+	extern CConsole console;
+}
 #endif

@@ -44,80 +44,80 @@ findRegion 查找城市
 sortBy Heat/Price,Down/Up 根据不同关键字升降序排序
 Add/Delete Region/Scenic 增添/删除 景点/地区
 RandomRecommand 随机推荐
-TODO： 模糊搜索(?) 
+TODO： 模糊搜索(?)
 */
 #include "pch.h"
+#include "CConsole.h"
 
 using namespace std;
 #undef Scenic
 #undef Position
 #undef Region
 
-class Scenic{
-	public:
-		string name;
-		double price;//价格
-		double heat;//景点热度
-		Scenic(){
-			cin>>name>>heat>>price;
-		}
+class Scenic {
+public:
+	string name;
+	double price;//价格
+	double heat;//景点热度
+	Scenic() {
+		cin >> name >> heat >> price;
+	}
 };
 
-class Position{
-	public:
-		string name;//地名
-		int len;//著名景点个数
-		Scenic *p[100];//上限100 这里没有使用链表是因为 可以但不必要 
+class Position {
+public:
+	string name;//地名
+	int len;//著名景点个数
+	Scenic *p[100];//上限100 这里没有使用链表是因为 可以但不必要 
 };
 
-class RegionClass:public Position{
-	public:
-		static int tot_Region;//总地区数
-		static RegionClass *Region ;
-		static RegionClass *RegionTail;
-		RegionClass *next;
-		RegionClass(){
-			cin>>name>>len;
-			next=nullptr;
-		}
+class RegionClass :public Position {
+public:
+	static int tot_Region;//总地区数
+	static RegionClass *Region;
+	static RegionClass *RegionTail;
+	RegionClass *next;
+	RegionClass() {
+		cin >> name >> len;
+		next = nullptr;
+	}
 };
 
 int RegionClass::tot_Region = 0;
-RegionClass *Region = nullptr;
-RegionClass *RegionTail = nullptr;
+RegionClass *RegionClass::Region = nullptr;
+RegionClass *RegionClass::RegionTail = nullptr;
 
 
 /*
-
 OutLoad 用于产生读取数据的动画效果
 延迟一秒显得更加真实
-
 */
-void OutLoad(){
-	system("cls");
-	cout<<"Loading data..."<<endl;
+void OutLoad() {
+	console.ClearScreen();
+	//system("cls");
+	console << "Loading data..." << endl;
 	Sleep(1000);//顿挫感
-	system("cls");
+	console.ClearScreen();
 }
-
-
-void LoadData(){
+void LoadData() {
 	// Openfile;
+	freopen(".\\Data.txt","r",stdin);
 	OutLoad();
-	cin>>Region->tot_Region;
-	for(int i=1;i<=Region->tot_Region;i++){
-		RegionClass *tempRegion= new RegionClass();
-		if(i==1) Region=tempRegion;
-		else RegionTail->next=tempRegion;
-		RegionTail = tempRegion;
-		for(int j=1;j<=tempRegion->len; j++){
+	cin >> RegionClass::Region->tot_Region;
+	for (int i = 1; i <= RegionClass::Region->tot_Region; i++) {
+		RegionClass *tempRegion = new RegionClass();
+		if (i == 1) RegionClass::Region = tempRegion;
+		else RegionClass::RegionTail->next = tempRegion;
+		RegionClass::RegionTail = tempRegion;
+		for (int j = 1; j <= tempRegion->len; j++) {
 			tempRegion->p[j] = new Scenic();
 		}
 	}
 	Sleep(1000);//顿挫感
-	cout<<"Data load finished"<<endl;
+	console << "Data load finished" << endl;
 	Sleep(1000);
-	system("cls");
+	console.ClearScreen();
+	freopen("CON","r",stdin);
 }
 
 /*
@@ -125,31 +125,31 @@ void LoadData(){
 完整地输出所有的信息
 格式是
  -城市1
-    - 景点1 热度：热度 价格：价格
-    - 景点2 热度：热度 价格：价格
+	- 景点1 热度：热度 价格：价格
+	- 景点2 热度：热度 价格：价格
  - 城市2
- 	- 景点3 热度：热度 价格：价格
-    - 景点4 热度：热度 价格：价格
+	- 景点3 热度：热度 价格：价格
+	- 景点4 热度：热度 价格：价格
 
 */
-void OutputRegion(){
+void OutputRegion() {
 
-	RegionClass *index = Region;
-	if(index == nullptr){
-		cout<<"Warning: No data found."<<endl;
-		return ;
+	RegionClass *index = RegionClass::Region;
+	if (index == nullptr) {
+		console << "Warning: No data found." << endl;
+		return;
 	}
-	while(index!=nullptr){
-		cout<<"┗"<<index->name<<endl;
-		for(int i=1;i<=index->len;i++){
-			cout<<"  ┗";
-			cout<<index->p[i]->name<<"  热度:"<<index->p[i]->heat<<"  价格:"<<index->p[i]->price<<endl;
+	while (index != nullptr) {
+		console << "|-" << index->name << endl;
+		for (int i = 1; i <= index->len; i++) {
+			console << "  |-";
+			console << index->p[i]->name << "  热度:" << index->p[i]->heat << "  价格:" << index->p[i]->price << endl;
 		}
-		index=index->next;
+		index = index->next;
 	}
 
-	cout<<endl;
-	return ;
+	console << endl;
+	return;
 }
 
 /*
@@ -157,13 +157,13 @@ void OutputRegion(){
 按城市输出景点
 
 */
-void OutputSpecific(RegionClass *index){
-	if(index == nullptr) return ;
-	else{
-		cout<< index->name <<endl;
-		for(int i=1;i<=index->len;i++){
-			cout<<"┗";
-			cout<<index->p[i]->name<<"  热度:"<<index->p[i]->heat<<"  价格:"<<index->p[i]->price<<endl;
+void OutputSpecific(RegionClass *index) {
+	if (index == nullptr) return;
+	else {
+		console << index->name << endl;
+		for (int i = 1; i <= index->len; i++) {
+			console << "|-";
+			console << index->p[i]->name << "  热度:" << index->p[i]->heat << "  价格:" << index->p[i]->price << endl;
 		}
 	}
 }
@@ -173,10 +173,10 @@ void OutputSpecific(RegionClass *index){
 根据输入的城市名寻找对应在Region链表中的位置
 
 */
-RegionClass* FindRegion(string targetRegion){
-	RegionClass *ret = Region;
-	while(ret != nullptr && ret->name != targetRegion) ret = ret->next;
-	if(ret == nullptr) cout<<"Warning : No such region found." <<endl;
+RegionClass* FindRegion(string targetRegion) {
+	RegionClass *ret = RegionClass::Region;
+	while (ret != nullptr && ret->name != targetRegion) ret = ret->next;
+	if (ret == nullptr) console << "Warning : No such region found." << endl;
 	return ret;
 }
 /*
@@ -187,20 +187,20 @@ RegionClass* FindRegion(string targetRegion){
 
 */
 
-bool cmp_Heat_Down(Scenic *a,Scenic *b){
-	 return a->heat < b->heat;
+bool cmp_Heat_Down(Scenic *a, Scenic *b) {
+	return a->heat < b->heat;
 }
 
-bool cmp_Heat_Up(Scenic *a,Scenic *b){
-	 return a->heat > b->heat;
+bool cmp_Heat_Up(Scenic *a, Scenic *b) {
+	return a->heat > b->heat;
 }
 
-bool cmp_Price_Down(Scenic *a,Scenic *b){
-	 return a->price < b->price;
+bool cmp_Price_Down(Scenic *a, Scenic *b) {
+	return a->price < b->price;
 }
 
-bool cmp_Price_Up(Scenic *a,Scenic *b){
-	 return a->price > b->price;
+bool cmp_Price_Up(Scenic *a, Scenic *b) {
+	return a->price > b->price;
 }
 
 /*
@@ -214,176 +214,176 @@ bool cmp_Price_Up(Scenic *a,Scenic *b){
 
 */
 
-void sortByHeatDown(RegionClass *index){
-	for(int i=1;i<=index->len;i++)
-		for(int j=1;j<index->len;j++)
-			if(cmp_Heat_Down(index->p[j],index->p[j+1]))
-				swap(index->p[j],index->p[j+1]);
+void sortByHeatDown(RegionClass *index) {
+	for (int i = 1; i <= index->len; i++)
+		for (int j = 1; j < index->len; j++)
+			if (cmp_Heat_Down(index->p[j], index->p[j + 1]))
+				swap(index->p[j], index->p[j + 1]);
 
 }
 
-void sortByHeatUp(RegionClass *index){
-	for(int i=1;i<=index->len;i++)
-		for(int j=1;j<index->len;j++)
-			if(cmp_Heat_Up(index->p[j],index->p[j+1]))
-				swap(index->p[j],index->p[j+1]);
+void sortByHeatUp(RegionClass *index) {
+	for (int i = 1; i <= index->len; i++)
+		for (int j = 1; j < index->len; j++)
+			if (cmp_Heat_Up(index->p[j], index->p[j + 1]))
+				swap(index->p[j], index->p[j + 1]);
 }
 
-void sortByPriceDown(RegionClass *index){
-	for(int i=1;i<=index->len;i++)
-		for(int j=1;j<index->len;j++)
-			if(cmp_Price_Down(index->p[j],index->p[j+1]))
-				swap(index->p[j],index->p[j+1]);
+void sortByPriceDown(RegionClass *index) {
+	for (int i = 1; i <= index->len; i++)
+		for (int j = 1; j < index->len; j++)
+			if (cmp_Price_Down(index->p[j], index->p[j + 1]))
+				swap(index->p[j], index->p[j + 1]);
 }
 
-void sortByPriceUp(RegionClass *index){
-	for(int i=1;i<=index->len;i++)
-		for(int j=1;j<index->len;j++)
-			if(cmp_Price_Up(index->p[j],index->p[j+1]))
-				swap(index->p[j],index->p[j+1]);
+void sortByPriceUp(RegionClass *index) {
+	for (int i = 1; i <= index->len; i++)
+		for (int j = 1; j < index->len; j++)
+			if (cmp_Price_Up(index->p[j], index->p[j + 1]))
+				swap(index->p[j], index->p[j + 1]);
 }
 
 
 /*
 
-添加一个地区：按照最上方对Data文件的规范输入 
+添加一个地区：按照最上方对Data文件的规范输入
 
 */
-void AddRegion(){
-	string InputS; cin>>InputS;
-	RegionClass *temp = FindRegion (InputS);
+void AddRegion() {
+	string InputS; cin >> InputS;
+	RegionClass *temp = FindRegion(InputS);
 	// 若地区已经存在 增加景点时直接添加。 
-	if(temp!=nullptr){
-		int lenDelta;cin>>lenDelta;
-		for(int i=1;i<=lenDelta;i++){
-			temp->p[temp->len+i] = new Scenic();
-		} 
+	if (temp != nullptr) {
+		int lenDelta; cin >> lenDelta;
+		for (int i = 1; i <= lenDelta; i++) {
+			temp->p[temp->len + i] = new Scenic();
+		}
 		temp->len += lenDelta;
 	}
-	else{
+	else {
 	//添加地区不存在 新建链表节点放置链表尾 
-		for(int i=1;i<=temp->len;i++)
-			temp->p[i]= new Scenic();
-		if(Region == nullptr) 
-			Region = temp;
+		for (int i = 1; i <= temp->len; i++)
+			temp->p[i] = new Scenic();
+		if (RegionClass::Region == nullptr)
+			RegionClass::Region = temp;
 		else
-			RegionTail -> next = temp;
-		RegionTail = temp;  
+			RegionClass::RegionTail->next = temp;
+		RegionClass::RegionTail = temp;
 		temp->tot_Region++;//总的地区数++ 
-	} 
+	}
 }
 
 /*
 
 删除一个地区：这里是删除一个完整城市的信息
-输入的是一个城市名 
+输入的是一个城市名
 
-*/ 
-void DeleteRegion(string InputS){
-	RegionClass *Index = Region;
-	RegionClass *Target = Region->next;
-	
+*/
+void DeleteRegion(string InputS) {
+	RegionClass *Index = RegionClass::Region;
+	RegionClass *Target = RegionClass::Region->next;
+
 	//如果Region 链表头就是我们所删除的节点 
-	if(Index->name == InputS) {
-		Region = Region -> next;
-		if(RegionTail->name == InputS)  //链表中只存在一个节点 且恰为想删除的节点 
-			RegionTail = Region = nullptr; 
+	if (Index->name == InputS) {
+		RegionClass::Region = RegionClass::Region->next;
+		if (RegionClass::RegionTail->name == InputS)  //链表中只存在一个节点 且恰为想删除的节点 
+			RegionClass::RegionTail = RegionClass::Region = nullptr;
 		free(Index); //Index 此时就是一开始的链表头 
 	}
-	else{
+	else {
 		//目标节点不存在 或者 在非链表头节点
-		while(Target->name != InputS && Target != nullptr){
-			Index=Target;
-			Target=Target->next;
-		} 
-		if(Target == nullptr){
+		while (Target->name != InputS && Target != nullptr) {
+			Index = Target;
+			Target = Target->next;
+		}
+		if (Target == nullptr) {
 			//目标节点未找到
-			cout<<"Warning : No such region found."<<endl;
-			return ;
-		} 
-		else{
+			console << "Warning : No such region found." << endl;
+			return;
+		}
+		else {
 			//目标节点找到，是Target，且Target的前驱是Index
-			Index -> next = Target -> next;
+			Index->next = Target->next;
 			free(Target);
-			Index->tot_Region -- ;//总的地区数减少 
-		} 
-	} 
-} 
+			Index->tot_Region--;//总的地区数减少 
+		}
+	}
+}
 
 /*
 
-增加一个景点：输入的是一个城市名 
+增加一个景点：输入的是一个城市名
 
 */
-void AddScenic(string InputS){
+void AddScenic(string InputS) {
 	RegionClass *Index = FindRegion(InputS);
 	//如果该城市并不存在 等价于新增一个城市，该城市仅有一个景点 
-	if(Index == nullptr) {
+	if (Index == nullptr) {
 		Index = new RegionClass;
-		Index -> name = InputS;
-		Index -> len = 1;
-		Index -> p[1] = new Scenic(); 
+		Index->name = InputS;
+		Index->len = 1;
+		Index->p[1] = new Scenic();
 		//以上：增加一个城市，一个景点 
-		if(Region == nullptr) 
-			Region = Index;
+		if (RegionClass::Region == nullptr)
+			RegionClass::Region = Index;
 		else
-			RegionTail -> next = Index;
-		RegionTail = Index;
-		RegionTail -> tot_Region++;
-	} 
+			RegionClass::RegionTail->next = Index;
+		RegionClass::RegionTail = Index;
+		RegionClass::RegionTail->tot_Region++;
+	}
 	else {
-		Index -> len++;
-		Index->p[Index -> len] = new Scenic();
- 	}
-} 
+		Index->len++;
+		Index->p[Index->len] = new Scenic();
+	}
+}
 
 /*
 
 删除一个景点：输入的是一个城市名
 我们没有提供直接删除景点的操作，必须经过城市-景点进行精确定位
-因为删除操作是谨慎的 
+因为删除操作是谨慎的
 
 */
 
-void DeleteScenic(string InputS){
+void DeleteScenic(string InputS) {
 	RegionClass *Index = FindRegion(InputS);
-	if(Index == nullptr) return ;
+	if (Index == nullptr) return;
 	else {
-		cin>>InputS;//这里的InputS是景点名 不是地区名
-		bool isfound=false;//状态 是否找到  
-		for(int i=1;i<=Index->len;i++){
-			if(Index->p[i]->name == InputS)
+		cin >> InputS;//这里的InputS是景点名 不是地区名
+		bool isfound = false;//状态 是否找到  
+		for (int i = 1; i <= Index->len; i++) {
+			if (Index->p[i]->name == InputS)
 				isfound = true;
-			if(isfound == true)
-				if(i<Index->len)// 非最后一个景点
-					Index->p[i]=Index->p[i+1]; 
+			if (isfound == true)
+				if (i < Index->len)// 非最后一个景点
+					Index->p[i] = Index->p[i + 1];
 			//上述操作在于：将目标景点的节点之后的所有节点向前平移 
 		}
-		if(isfound == false)//未找到景点
-			cout<<"Warning : No such scenic found."; 
-	} 
-} 
+		if (isfound == false)//未找到景点
+			console << "Warning : No such scenic found.";
+	}
+}
 
 /*
 
 随机推荐
 随机推荐某一个城市的某一个景点
-**这里不等于根据用户的喜好进行推荐 
+**这里不等于根据用户的喜好进行推荐
 
 */
-void RandomRecommand(){
+void RandomRecommand() {
 	srand(time(0));
-	int MagicN=rand()%Region->tot_Region;
-	RegionClass *Index=Region;
-	while(MagicN--) 
-		Index= Index->next;
-	MagicN = 1+ rand()%Index->len;
-	cout<<"随机推荐："<<Index->name<<" "<<Index->p[MagicN]->name<<endl; 
+	int MagicN = rand() % RegionClass::Region->tot_Region;
+	RegionClass *Index = RegionClass::Region;
+	while (MagicN--)
+		Index = Index->next;
+	MagicN = 1 + rand() % Index->len;
+	console << "随机推荐：" << Index->name << " " << Index->p[MagicN]->name << endl;
 }
 
 /*
 
-TODO： 
-模糊搜索 
+TODO：
+模糊搜索
 
-*/ 
+*/

@@ -1,13 +1,20 @@
-﻿#include "pch.h"
+﻿#include "CConsole.h"
+#include "Train.h"
+#include "Scenic.h"
+#include "Hotel.h"
+#include "pch.h"
+
 #include "constStr.h"
 #include "ReflectFactory.h"
-#include "CConsole.h"
+
 using namespace Gdiplus;
 using namespace std;
-CConsole console(cTitle);
+
 Reflect::Worker ReflectWorker;
+std::CConsole std::console("iTravel v0.11");
 
 namespace Reflect {
+	using std::console;
 	class exit :public ReflectBase, DynamicCreator<exit> {
 	public:
 		exit() {}
@@ -36,7 +43,7 @@ namespace Reflect {
 		about() {}
 		virtual void Work() {
 			console.ClearScreen();
-			console.WriteText(about_info);
+			//console.WriteText(about_info);
 		}
 	};
 	class cls :public ReflectBase, DynamicCreator<cls> {
@@ -62,16 +69,22 @@ bool parseCommandline(const string & content) {
 	b.erase(remove_if(b.begin(), b.end(), ::isblank), b.end());
 	//转换为小写
 	transform(b.begin(), b.end(), b.begin(), ::tolower);
-	b.insert(0,"Reflect::");
+	b.insert(0, "Reflect::");
 	//反射到命令对应的类上
 	Reflect::ReflectBase *p = ReflectWorker.Create(b);
-	if(p){
+	if (p) {
 		p->Work();
 		return true;
-	}else{
+	}
+	else {
 		if (size_t pos = b.find("loadimg") != string::npos) {
 			console.stopDrawingThread();
 			console.displayImage(console.string2wstring(b.substr(pos + 6)), COORD{ 233,233 });
+			return true;
+		}else if( b == "Reflect::test"){
+			LoadData();
+			OutputRegion();
+			
 			return true;
 		}
 	}
@@ -86,7 +99,7 @@ int main(void) {
 	string content;
 	while (getline(cin, content)) {
 		if (!parseCommandline(content))
-			console << "'" << content << "'" 
+			console << "'" << content << "'"
 			<< " is not recognized as an internal or external command,\noperable program or batch file. " << endl;
 	}
 	return 0;
