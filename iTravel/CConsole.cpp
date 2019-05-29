@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CConsole.h"
 
-namespace std{
+namespace std {
 
 	HANDLE CConsole::__createNewScreen() {
 		return CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -73,10 +73,9 @@ namespace std{
 		WriteConsoleA(background, output_buffer.c_str(), output_buffer.length(), nullptr, nullptr);
 		updateScreen();
 	}
-	//不刷新屏幕
+	//不经过缓冲区
 	void CConsole::__WriteText(const string & out) {
-		output_buffer += out;
-		WriteConsoleA(background, output_buffer.c_str(), output_buffer.length(), nullptr, nullptr);
+		WriteConsoleA(background, out.c_str(), out.length(), nullptr, nullptr);
 	}
 	void CConsole::ClearOutputBuffer() {
 		output_buffer.clear();
@@ -264,17 +263,33 @@ namespace std{
 		ClearOutputBuffer();
 		updateScreen();
 	}
-	void CConsole::Dialog(const string& text) {
+	void CConsole::Dialog(const string& text, const COORD& left_up, const COORD& right_down) {
 		ClearScreen();
-		setRectangleAttribute();
-		CONSOLE_SCREEN_BUFFER_INFO info;
-		GetConsoleScreenBufferInfo(foreground, &info);
 		//获得缓冲区坐标
-		COORD x{ 5,4 }, y{ 5 + ((info.srWindow.Right - 10) >> 1),4 + ((info.srWindow.Bottom - 8) >> 1) };
-		x = DrawRectangle(x, y);
-		putCursor(x, background);
+		COORD x{ 5,4 };
+
 		//setColorInput();
-		__WriteText(text);
+		string b = text, sub;
+		size_t pos = b.find('\n', 0), lastpos = 0, maxlen = 0;
+		sub = b.substr(0, pos);
+		vector<string> box;
+		while (pos != string::npos) {
+			lastpos = pos;
+			pos = b.find('\n', pos + 1);
+			string sub = b.substr(lastpos + 1, pos - lastpos - 1);
+			box.push_back(sub);
+			maxlen = max(maxlen, sub.length());
+		}
+		x = DrawRectangle(left_up, right_down);
+		x.X = ((left_up.X + right_down.X) >> 1) - (maxlen / 2);
+		putCursor(x, background);
+		for (auto z : box) {
+			__WriteText(z);
+			x.Y++;
+			putCursor(x, background);
+		}
+		//OutputDebugStringA(sub.c_str());
+		//刷新屏幕
 		updateScreen();
 	}
 	void CConsole::setRectangleAttribute(short FontColor, short BackColor) {

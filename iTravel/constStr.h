@@ -15,16 +15,17 @@ inline const char *Welcome =
 "                               iTravel\n"
 "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆\n";
 inline const char *about_info = R"(
-       iTravel v0.11
+       iTravel v0.2
 ==========================
-Developers:
-	Wonyeaweat
-	zyounan
-	shizia_047
-Build Date:
-	2019/5/25
+开发者:
+	@YeVII
+	@zyounan
+	@shizia_047
+编译日期:
+	2019/5/29
+==========================
 )";
-inline const char *cTitle = "iTravel v0.11";
+inline const char *cTitle = "iTravel v0.2";
 inline const char *currentPath = ".\\", *userDataFileName = ".\\userData.dat",
 *favFilename = ".\\myFav.dat", *feedFilename = ".\\Feedback.dat", *BackFilename = ".\\Back.dat";
 inline const char *tUser = "用户:", *tInvaildUser = "用户名不存在，请重新输入",

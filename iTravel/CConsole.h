@@ -104,7 +104,7 @@ namespace std{
 		void displayImage(const std::wstring&, const COORD& where);
 		void putCursor(COORD);
 		void putCursor(COORD, HANDLE);
-		void Dialog(const std::string &);
+		void Dialog(const std::string &,const COORD&,const COORD&);
 		void putCursorToEnd();
 		COORD DrawRectangle(const COORD&, const COORD&);
 		void setRectangleAttribute(short = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED, short = BACKGROUND_BLUE);

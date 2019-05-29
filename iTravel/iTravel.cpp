@@ -42,7 +42,7 @@ namespace Reflect {
 	public:
 		about() {}
 		virtual void Work() {
-			console.ClearScreen();
+			console.Dialog(about_info,COORD{5,3},COORD{80,20});
 			//console.WriteText(about_info);
 		}
 	};
@@ -57,9 +57,10 @@ namespace Reflect {
 	public:
 		rect() {}
 		virtual void Work() {
-			console.Dialog("Hello,Dialog!");
+			//console.Dialog(about_info);
 		}
 	};
+	
 };
 //解析命令部分
 bool parseCommandline(const string & content) {
@@ -93,7 +94,6 @@ bool parseCommandline(const string & content) {
 }
 
 int main(void) {
-	//getCurrentConsoleHandle();
 	console.init(BACKGROUND_BLUE, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 	console << Welcome;
 	string content;
