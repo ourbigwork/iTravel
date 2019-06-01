@@ -2,17 +2,18 @@
 #include "Train.h"
 #include "Scenic.h"
 #include "Hotel.h"
-#include "pch.h"
+#include "UserInfo.h"
 
+#include "pch.h"
 #include "constStr.h"
 #include "ReflectFactory.h"
 
 using namespace Gdiplus;
 using namespace std;
-
 Reflect::Worker ReflectWorker;
 std::CConsole std::console("iTravel v0.11");
-
+User user(".\\userinfo.dat");
+bool isLogin = false;
 namespace Reflect {
 	using std::console;
 	class exit :public ReflectBase, DynamicCreator<exit> {
@@ -22,27 +23,61 @@ namespace Reflect {
 			::exit(0);
 		}
 	};
+	class whoami :public ReflectBase, DynamicCreator<whoami> {
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				user.Show();
+				cin.get();
+			}
+			else
+				console << "我也不知道您是谁，因为您没登录>.<" << endl;
+		}
+
+	};
+	class regist :public ReflectBase, DynamicCreator<regist> {
+	public:
+		virtual void Work() {
+			if (!isLogin) {
+				user.Regist();
+				cin.get();
+			}
+			else
+				console << "您已经登录，" << user.getUser() << endl;
+		}
+
+	};
+	class change :public ReflectBase, DynamicCreator<change> {
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				user.Change();
+				cin.get();
+			}
+			else
+				console << "您尚未登录！" << endl;
+		}
+	};
 	class login :public ReflectBase, DynamicCreator<login> {
 	public:
-		login() {}
 		virtual void Work() {
-			console.ClearScreen();
-			console << "UserName:";
-			string username;
-			cin >> username;
-			console << username;
-			console << endl << "password:";
-			string password = console.InputPassword();
-			//在这里判断
-			console << password << endl << "Welcome," << username << ". Your password is:" << password << endl;
-			cin.get();//清理最后的换行符
+			if (!isLogin) {
+				user.Login();
+				cin.get();
+				isLogin = true;
+			}
+			else
+				console << "您已经登录，" << user.getUser() << endl;
+			isLogin = true;
+			//cin.get();//清理最后的换行符
 		}
+
 	};
 	class about :public ReflectBase, DynamicCreator<about> {
 	public:
 		about() {}
 		virtual void Work() {
-			console.Dialog(about_info,COORD{5,3},COORD{80,20});
+			console.Dialog(about_info, COORD{ 5,3 }, COORD{ 80,20 });
 			//console.WriteText(about_info);
 		}
 	};
@@ -60,7 +95,7 @@ namespace Reflect {
 			//console.Dialog(about_info);
 		}
 	};
-	
+
 };
 //解析命令部分
 bool parseCommandline(const string & content) {
@@ -82,10 +117,11 @@ bool parseCommandline(const string & content) {
 			console.stopDrawingThread();
 			console.displayImage(console.string2wstring(b.substr(pos + 6)), COORD{ 233,233 });
 			return true;
-		}else if( b == "Reflect::test"){
+		}
+		else if (b == "Reflect::test") {
 			LoadData();
 			OutputRegion();
-			
+
 			return true;
 		}
 	}
@@ -94,6 +130,7 @@ bool parseCommandline(const string & content) {
 }
 
 int main(void) {
+	isLogin = false;
 	console.init(BACKGROUND_BLUE, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 	console << Welcome;
 	string content;

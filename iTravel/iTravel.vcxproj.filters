@@ -33,6 +33,12 @@
     <ClInclude Include="Train.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="UserInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -45,6 +51,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="iTravel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

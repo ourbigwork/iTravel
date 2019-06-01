@@ -153,15 +153,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="constStr.h" />
+    <ClInclude Include="FileHelper.h" />
     <ClInclude Include="Hotel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReflectFactory.h" />
     <ClInclude Include="Scenic.h" />
     <ClInclude Include="Train.h" />
+    <ClInclude Include="UserInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CConsole.cpp" />
     <ClCompile Include="CConsole.h" />
+    <ClCompile Include="FileHelper.cpp" />
     <ClCompile Include="iTravel.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -169,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UserInfo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

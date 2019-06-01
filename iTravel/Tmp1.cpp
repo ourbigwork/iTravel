@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "constStr.h"
+#include "CConsole.h"
 using namespace std;
 struct like {
 	string where;    //什么地方的
@@ -21,12 +22,12 @@ struct keydata {
 	}
 }onepiece;
 //const keydata mark{ "0","00000000000","0","0","0" };
-int endmark(keydata)
+/*int endmark(keydata)
 {
 	if (onepiece.phonee.compare("00000000000") == 0)
 		return 1;
 	else return 0;
-}
+}*/
 struct feedbackwords    //用户的反馈
 {
 	string words;
@@ -109,7 +110,7 @@ void user::set()              //这个只先给三个主要的成员变量赋值，不写入文档先
 	while (cin >> name)
 	{
 		userdata.seekg(0, ios_base::beg);
-		while (!endmark(onepiece))
+		while (!userdata.eof())
 		{
 			userdata >> onepiece;
 			if ((name.compare(onepiece.nicknamee) == 0) || name.compare("0") == 0)
@@ -179,7 +180,7 @@ void user::change()      //不可以改名字
 		}
 		if (password1.compare(password2) == 0)
 			password = password1;
-		while (!endmark(onepiece) && onepiece.nicknamee != nickname)
+		while (!userdata.eof() && onepiece.nicknamee != nickname)
 		{
 			userdata.read((char*)&onepiece, sizeof(keydata));
 		}
@@ -271,7 +272,7 @@ void customer::login()
 	user::login();
 	userdata.open(userDataFileName, ios_base::in | ios_base::binary);
 	userdata.seekg(0);
-	while (!endmark(onepiece))
+	while (!userdata.eof())
 	{
 		userdata.read((char*)&onepiece, sizeof(keydata));
 		if (nickname == onepiece.nicknamee)
@@ -288,7 +289,7 @@ void customer::set()
 	fstream userdata;
 	userdata.open(userDataFileName, ios_base::out | ios_base::in | ios_base::binary);
 	userdata.seekg(0, ios_base::beg);
-	while (!endmark(onepiece))
+	while (!userdata.eof())
 	{
 		userdata >> onepiece;
 	}                  //指针指到最末尾
@@ -420,20 +421,6 @@ void charge::reply()
 	feedbackk.close();
 	reply.close();
 }
-int main()
-{
-	cout << "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆" << endl;
-	cout << "          ▇▇▇▇▇      ▇▇▇▇▇     ▇▇▇▇▇      ▇▇▇▇▇  " << endl;
-	cout << "        ◢▇▇▇▇▇◣  ◢▇▇▇▇▇◣ ◢▇▇▇▇▇◣  ◢▇▇▇▇▇◣" << endl;
-	cout << "        ▇    欢    ▇  ▇    迎    ▇ ▇    使    ▇  ▇    用    ▇" << endl;
-	cout << "        ◥▇▇▇▇▇◤  ◥▇▇▇▇▇◤ ◥▇▇▇▇▇◤  ◥▇▇▇▇▇◤" << endl;
-	cout << "          ▇▇▇▇▇      ▇▇▇▇▇     ▇▇▇▇▇      ▇▇▇▇▇  " << endl;
-	cout << "           | | | |          | | |           | | |          | | | |   " << endl;
-	cout << endl;
-	cout << "                               i Travel" << endl;
-	cout << "☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆";
-	cout << endl << endl;
-
 	//初始化文件，写入空标志
 
 	//fstream userdata;
@@ -442,8 +429,8 @@ int main()
 	//userdata << onepiece;
 	//userdata.close();
 
-	customer one;
-	one.set();
+	//customer one;
+	//one.set();
 
 	/*customer one;
 	one.login();
@@ -461,5 +448,3 @@ int main()
 	//	cout << onepiece.nicknamee << " " << onepiece.phonee << " " << onepiece.passwordd << " " << onepiece.preferencepp << endl;
 	//}
 	//userdata.close();
-
-}
