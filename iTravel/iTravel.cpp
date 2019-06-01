@@ -55,7 +55,7 @@ namespace Reflect {
 				cin.get();
 			}
 			else
-				console << "您尚未登录！" << endl;
+				console << "要改谁的信息我也不知道呀>.<" << endl;
 		}
 	};
 	class login :public ReflectBase, DynamicCreator<login> {
@@ -72,6 +72,20 @@ namespace Reflect {
 			//cin.get();//清理最后的换行符
 		}
 
+	};
+	class logout :public ReflectBase, DynamicCreator<logout> {
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				isLogin = false;
+				user.Logout();
+				cin.get();
+				console.ClearScreen();
+				console << Welcome;
+			}
+			else
+				console << "兄啊你还没登录注销个毛啊（" << endl;
+		}
 	};
 	class about :public ReflectBase, DynamicCreator<about> {
 	public:

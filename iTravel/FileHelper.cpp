@@ -2,9 +2,12 @@
 #include "shlwapi.h"
 #include "FileHelper.h"
 #pragma comment(lib,"Shlwapi.lib")
-//数据格式
+//数据格式 --  userinfo.dat
 /*
-	用户名 手机号 密码
+	权限代号*
+		1 - 普通用户
+		2 - 管理员
+	权限代号 用户名 手机号 密码
 */
 userDataFileHelper::userDataFileHelper() {
 }
@@ -23,18 +26,24 @@ void userDataFileHelper::__loadData() {
 		return;
 	}
 	rewind(fp);
+	int type;
 	char user[25]{ 0 }, phone[25]{ 0 }, password[25]{ 0 };
-	while (~fscanf(fp, "%s %s %s", user, phone, password)) {
+	while (~fscanf(fp, "%d %s %s %s", &type, user, phone, password)) {
 		User us;
 		us.name = user;
 		us.password = password;
 		us.phone = phone;
+		us.type = type;
 		mp.insert(std::make_pair(user, us));
 	}
 	fclose(fp);
 }
-
-void userDataFileHelper::findUser(const std::string& username, std::string & password, std::string & phone) {
+SYSTEMTIME userDataFileHelper::__Localtimenow(){
+	SYSTEMTIME lptime;
+	GetLocalTime(&lptime);
+	return lptime;
+}
+void userDataFileHelper::findUser(const std::string& username, std::string & password, std::string & phone, int& type) {
 	__loadData();
 	std::map<std::string, User>::iterator iter = mp.find(username);
 	if (iter == mp.end()) {
@@ -42,15 +51,17 @@ void userDataFileHelper::findUser(const std::string& username, std::string & pas
 	}
 	password = iter->second.password;
 	phone = iter->second.phone;
+	type = iter->second.type;
 	return;
 }
-void userDataFileHelper::revise(const std::string &username, const std::string & newPhone, const std::string &newPassword) {
+void userDataFileHelper::revise(const std::string &username, const std::string & newPhone, const std::string &newPassword, int type) {
 	ReopenFile(Filename);
 	rewind(fp);
 	char user[25]{ 0 }, phone[25]{ 0 }, password[25]{ 0 };
+	int ttype;
 	std::vector<User>users;
 	//为清除原有的一行，首先把除那一行的所有信息读出来，然后清空原来的文件
-	while (~fscanf(fp, "%s %s %s", user, phone, password)) {
+	while (~fscanf(fp, "%d %s %s %s", &ttype, user, phone, password)) {
 		User us;
 		if (user != username) {
 			us.name = user;
@@ -67,10 +78,10 @@ void userDataFileHelper::revise(const std::string &username, const std::string &
 	//以原来模式打开
 	fopen_s(&fp, Filename.c_str(), "a+");
 	for (int i = 0; i < users.size(); ++i) {
-		fprintf(fp, "%s %s %s\n", users[i].name.c_str(), users[i].phone.c_str(), users[i].password.c_str());
+		fprintf(fp, "%d %s %s %s\n", type, users[i].name.c_str(), users[i].phone.c_str(), users[i].password.c_str());
 	}
 	users.clear();
-	fprintf(fp, "%s %s %s\n", username.c_str(), newPhone.c_str(), newPassword.c_str());
+	fprintf(fp, "%d %s %s %s\n", type, username.c_str(), newPhone.c_str(), newPassword.c_str());
 	auto iter = mp.find(username);
 	iter->second.phone = newPhone;
 	iter->second.password = newPassword;
@@ -83,7 +94,7 @@ void userDataFileHelper::closeFile() {
 }
 void userDataFileHelper::ReopenFile(const std::string& filename) {
 	std::string Errorinfo;
-	if(fp)
+	if (fp)
 		fclose(fp);
 	if (!PathFileExistsA(filename.c_str()))
 		OutputDebugStringA(__format("[Warning]File %s not existed!\n", filename.c_str()).c_str());
@@ -95,17 +106,14 @@ void userDataFileHelper::ReopenFile(const std::string& filename) {
 	}
 	Filename = filename;
 }
-void userDataFileHelper::RegistUser(const std::string &username, const std::string &password, const std::string &phone) {
-	//fseek(fp, 0, SEEK_END);
-	//OutputDebugStringA(__format("Regist: %s %s %s\n", username.data(), phone.data(), password.data()).data());
-	//fprintf(fp, "%s %s %s\n", username.data(), phone.data(), password.data());
+void userDataFileHelper::RegistUser(const std::string &username, const std::string &password, const std::string &phone, int& type) {
 	ReopenFile(Filename);
-	char buff[1024]{0};
-	sprintf(buff,"%s %s %s\n", username.data(), phone.data(), password.data());
+	char buff[1024]{ 0 };
+	sprintf(buff, "%d %s %s %s\n", type, username.data(), phone.data(), password.data());
 	//fprintf(fp,"%s",buff);
-	fprintf(fp,"%s",buff);
+	fprintf(fp, "%s", buff);
 	fclose(fp);
-	bool res = mp.insert(std::make_pair(username, User{ username, password,phone })).second;
+	bool res = mp.insert(std::make_pair(username, User{ username, password,phone,type })).second;
 	if (!res)
 		OutputDebugStringA("Failed to insert a new User!");
 }
