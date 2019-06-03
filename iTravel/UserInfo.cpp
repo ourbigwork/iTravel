@@ -18,7 +18,7 @@ void User::Login() {
 	console << username << endl;
 	int ttype;
 	file.findUser(username, password, phone, ttype);
-	while(password.empty()){
+	while (password.empty()) {
 		console << tInvaildUser;
 		cin >> username;
 		console << username << endl;
@@ -31,12 +31,13 @@ void User::Login() {
 		console << "*********" << endl;
 		if (password != _password) {
 			i--;
-			if(!i){
+			if (!i) {
 				console << "尝试次数过多！" << endl;
 				return;
 			}
 			console << "密码错误，请重新输入：";
-		}else{
+		}
+		else {
 			break;
 		}
 	}
@@ -45,6 +46,26 @@ void User::Login() {
 	}
 	else
 		console << "登陆成功！" << endl;
+	//获得当前时间
+	string time = file.TimeUTCNow();
+	FILE* ptimeFile = fopen(".\\login", "a+");
+	//读入之前的文件；
+	char bLastTime[255]{ 0 };
+	if (ptimeFile) {
+		fscanf(ptimeFile, "%[^\n]%*c", bLastTime);//读取一行
+		if (strlen(bLastTime)) {
+			console << "上次登录：" << bLastTime << "." << endl;
+		}
+		else
+			OutputDebugStringA("[Warning]Last login time file not found!");
+		fclose(ptimeFile);
+	}
+	//清空之前的内容
+	ptimeFile = fopen(".\\login", "w");
+	if (ptimeFile) {
+		fprintf(ptimeFile, "%s from %s", time.c_str(),username.c_str());
+		fclose(ptimeFile);
+	}
 	this->password = password;
 	this->Phone = phone;
 	this->Username = username;

@@ -14,9 +14,15 @@ public:
 	void RegistUser(const std::string&, const std::string&, const std::string&, int&);
 	std::string getFilename()const;
 	FILE* getFile()const;
-	std::string TimeUTCNow(){
+	std::string TimeUTCNow() {
 		SYSTEMTIME sys = __Localtimenow();
-
+		const char* _week[]{ "Mon","Tue","Wed","Thu","Fri","Sat","Sun" }, 
+			*_month[]{ "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Dec","Nov" };
+		char buffer[255]{0};
+		//Last login: Mon May 20 21:38:44 2019 from ...
+		sprintf(buffer,"%s %s %d %d:%d:%d %d", _week[sys.wDayOfWeek - 1], _month[sys.wMonth - 1],
+			sys.wDay,sys.wHour,sys.wMinute,sys.wSecond,sys.wYear);
+		return buffer;
 	}
 private:
 	FILE* fp;
