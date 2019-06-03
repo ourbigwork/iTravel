@@ -28,7 +28,7 @@ inline const char *about_info = R"(
 inline const char *cTitle = "iTravel v0.2";
 inline const char *currentPath = ".\\", *userDataFileName = ".\\userData.dat",
 *favFilename = ".\\myFav.dat", *feedFilename = ".\\Feedback.dat", *BackFilename = ".\\Back.dat";
-inline const char *tUser = "用户:", *tInvaildUser = "用户名不存在，请重新输入",
+inline const char *tUser = "用户:", *tInvaildUser = "用户名不存在，请重新输入：",
 *tPass = "密码", *tWrongPass = "密码错误，请重新输入:", *tSuccessLogin = "登录成功!";
 inline const wchar_t *tPhone = L"手机号码:", *tRegister = L"注册", *tInputUser = L"请输入用户名：",
 *tUsernameInvaild = L"该用户名已被注册，请重新输入", *tInputPhone = L"请输入电话号码:",

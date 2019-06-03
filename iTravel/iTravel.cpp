@@ -64,11 +64,11 @@ namespace Reflect {
 			if (!isLogin) {
 				user.Login();
 				cin.get();
-				isLogin = true;
+				if(!user.getUser().empty())
+					isLogin = true;
 			}
 			else
 				console << "您已经登录，" << user.getUser() << endl;
-			isLogin = true;
 			//cin.get();//清理最后的换行符
 		}
 
@@ -79,7 +79,6 @@ namespace Reflect {
 			if (isLogin) {
 				isLogin = false;
 				user.Logout();
-				cin.get();
 				console.ClearScreen();
 				console << Welcome;
 			}

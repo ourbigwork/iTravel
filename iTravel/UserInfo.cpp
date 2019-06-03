@@ -11,29 +11,37 @@ void User::Login() {
 	using std::string;
 	using std::cin;
 	console.ClearScreen();
-	console << tUser << endl;
+	console << "用户名：";
 	string username, phone, password;
 	string _password;
 	cin >> username;
 	console << username << endl;
 	int ttype;
 	file.findUser(username, password, phone, ttype);
-	if (password.empty()) {
-		console << tInvaildUser << endl;
-		return;
+	while(password.empty()){
+		console << tInvaildUser;
+		cin >> username;
+		console << username << endl;
+		file.findUser(username, password, phone, ttype);
 	}
-	console << "密码:" << endl;
-	while (true) {
+	console << "密码:";
+	int i = 3;
+	while (i) {
 		_password = console.InputPassword();
 		console << "*********" << endl;
 		if (password != _password) {
-			console << "密码错误，请重新输入！" << endl;
-		}
-		else
+			i--;
+			if(!i){
+				console << "尝试次数过多！" << endl;
+				return;
+			}
+			console << "密码错误，请重新输入：";
+		}else{
 			break;
+		}
 	}
 	if (ttype == 2) {
-		console << "欢迎您，管理员:" << username << "." << endl;
+		console << "欢迎您，管理员：" << username << "." << endl;
 	}
 	else
 		console << "登陆成功！" << endl;

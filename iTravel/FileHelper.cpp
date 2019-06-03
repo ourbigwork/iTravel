@@ -44,7 +44,7 @@ SYSTEMTIME userDataFileHelper::__Localtimenow(){
 	return lptime;
 }
 void userDataFileHelper::findUser(const std::string& username, std::string & password, std::string & phone, int& type) {
-	__loadData();
+	__loadData(); 
 	std::map<std::string, User>::iterator iter = mp.find(username);
 	if (iter == mp.end()) {
 		return;
