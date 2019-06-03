@@ -11,7 +11,7 @@
 using namespace Gdiplus;
 using namespace std;
 Reflect::Worker ReflectWorker;
-std::CConsole std::console("iTravel v0.11");
+std::CConsole std::console(cTitle);
 User user(".\\userinfo.dat");
 bool isLogin = false;
 namespace Reflect {
@@ -90,7 +90,9 @@ namespace Reflect {
 	public:
 		about() {}
 		virtual void Work() {
-			console.Dialog(about_info, COORD{ 5,3 }, COORD{ 80,20 });
+			console.ClearScreen();
+			console << Welcome << about_info;
+			//console.Dialog(about_info, COORD{ 5,3 }, COORD{ 80,20 });
 			//console.WriteText(about_info);
 		}
 	};
@@ -145,6 +147,7 @@ bool parseCommandline(const string & content) {
 int main(void) {
 	isLogin = false;
 	console.init(BACKGROUND_BLUE, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	//console.displayImage(L".\\logo.png",COORD{0,0});
 	console << Welcome;
 	string content;
 	while (getline(cin, content)) {

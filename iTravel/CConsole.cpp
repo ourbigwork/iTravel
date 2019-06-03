@@ -73,6 +73,11 @@ namespace std {
 		WriteConsoleA(background, output_buffer.c_str(), output_buffer.length(), nullptr, nullptr);
 		updateScreen();
 	}
+	//宽字符版本，不常用就不走缓冲区了（就是输出欢迎字符画用的
+	void CConsole::WriteText(const wstring & out){
+		WriteConsoleW(background,out.c_str(),out.length(),nullptr,nullptr);
+		updateScreen();
+	}
 	//不经过缓冲区
 	void CConsole::__WriteText(const string & out) {
 		WriteConsoleA(background, out.c_str(), out.length(), nullptr, nullptr);
@@ -120,7 +125,8 @@ namespace std {
 		do {
 			if (!tContinueDrawing)
 				break;
-			gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y, img.GetWidth(), img.GetHeight());
+			gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y);
+			//gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y, img.GetWidth(), img.GetHeight());
 			::Sleep(500);
 		} while (tContinueDrawing);
 		updateScreen();
@@ -153,17 +159,18 @@ namespace std {
 	}
 	bool CConsole::ResizeWindow() {
 		tagRECT tNow_Window_Size = getCurrentWindowInfo();
-		SMALL_RECT sNow_Win_size;
+		//SMALL_RECT sNow_Win_size;
 		CONSOLE_SCREEN_BUFFER_INFOEX scri;
 		GetConsoleScreenBufferInfoEx(foreground, &scri);
 		//隐藏右侧滚动条
 		scri.dwMaximumWindowSize.Y = tNow_Window_Size.bottom - tNow_Window_Size.top;
 		SetConsoleScreenBufferInfoEx(foreground, &scri);
-		sNow_Win_size.Left = tNow_Window_Size.left;
-		sNow_Win_size.Right = tNow_Window_Size.left + window_len;
-		sNow_Win_size.Top = tNow_Window_Size.top;
-		sNow_Win_size.Bottom = tNow_Window_Size.top + window_width;
-		SetConsoleWindowInfo(foreground, false, &(sNow_Win_size));
+
+		//sNow_Win_size.Left = tNow_Window_Size.left;
+		//sNow_Win_size.Right = tNow_Window_Size.left + window_len;
+		//sNow_Win_size.Top = tNow_Window_Size.top;
+		//sNow_Win_size.Bottom = tNow_Window_Size.top + window_width;
+		//SetConsoleWindowInfo(foreground, false, &(sNow_Win_size));
 		return !GetLastError();
 	}
 	wstring CConsole::__string2wstring(const string& str) {
@@ -198,6 +205,10 @@ namespace std {
 		return *this;
 	}
 	CConsole& CConsole::operator<<(const string & text) {
+		WriteText(text);
+		return *this;
+	}
+	CConsole& CConsole::operator<<(const wstring & text) {
 		WriteText(text);
 		return *this;
 	}

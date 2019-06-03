@@ -72,7 +72,7 @@ namespace std{
 		HANDLE hConsole = nullptr,
 			background, foreground = nullptr;
 		//´°¿Ú
-		static const short window_width = 100, window_len = 200;
+		static const short window_width = 300, window_len = 500;
 		short nowx = 0, nowy = 0;
 		std::string ConsoleTitle;
 		short RectAttr = BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
@@ -120,10 +120,10 @@ namespace std{
 		void ClearOutputBuffer();
 		void ClearScreen();
 		void WriteText(const std::string&);
-
+		void WriteText(const std::wstring&);
 		std::string InputPassword(const char = '*', const size_t = 16);
 		CConsole& operator<<(const std::string&);
-
+		CConsole& operator<<(const std::wstring &);
 		CConsole& operator<<(const int);
 		CConsole& operator<<(const double);
 		CConsole& operator<<(const long long);
