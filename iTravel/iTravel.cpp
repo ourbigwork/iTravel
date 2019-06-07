@@ -11,7 +11,7 @@
 using namespace Gdiplus;
 using namespace std;
 Reflect::Worker ReflectWorker;
-std::CConsole std::console("iTravel v0.11");
+std::CConsole std::console(cTitle);
 User user(".\\userinfo.dat");
 bool isLogin = false;
 namespace Reflect {
@@ -64,11 +64,11 @@ namespace Reflect {
 			if (!isLogin) {
 				user.Login();
 				cin.get();
-				isLogin = true;
+				if(!user.getUser().empty())
+					isLogin = true;
 			}
 			else
 				console << "您已经登录，" << user.getUser() << endl;
-			isLogin = true;
 			//cin.get();//清理最后的换行符
 		}
 
@@ -79,7 +79,6 @@ namespace Reflect {
 			if (isLogin) {
 				isLogin = false;
 				user.Logout();
-				cin.get();
 				console.ClearScreen();
 				console << Welcome;
 			}
@@ -91,7 +90,9 @@ namespace Reflect {
 	public:
 		about() {}
 		virtual void Work() {
-			console.Dialog(about_info, COORD{ 5,3 }, COORD{ 80,20 });
+			console.ClearScreen();
+			console << Welcome << about_info;
+			//console.Dialog(about_info, COORD{ 5,3 }, COORD{ 80,20 });
 			//console.WriteText(about_info);
 		}
 	};
@@ -146,6 +147,7 @@ bool parseCommandline(const string & content) {
 int main(void) {
 	isLogin = false;
 	console.init(BACKGROUND_BLUE, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+	//console.displayImage(L".\\logo.png",COORD{0,0});
 	console << Welcome;
 	string content;
 	while (getline(cin, content)) {

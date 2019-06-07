@@ -1,41 +1,51 @@
-#pragma once
+ï»¿#pragma once
 #ifndef OUTPUT_STR
 #define OUTPUT_STR
-//×¢Òâ£ºÀÁµÃÔÙ¿ªÒ»¸öcppĞ´¶¨ÒåÁË£¬Òò´ËÊ¹ÓÃÁËC++17µÄÄÚÁª±äÁ¿
-//MSVC±àÒëÊ±ÇëÔÚ²ÎÊıºó¼ÓÉÏ/std:c++17
-inline const char *Welcome =
-"¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î\n"
-"          ¨~¨~¨~¨~¨~     ¨~¨~¨~¨~¨~     ¨~¨~¨~¨~¨~      ¨~¨~¨~¨~¨~\n"
-"         ¨¨~¨~¨~¨~¨~¨    ¨¨~¨~¨~¨~¨~¨   ¨¨~¨~¨~¨~¨~¨    ¨¨~¨~¨~¨~¨~¨\n"
-"         ¨~ »¶ ¨~     ¨~ Ó­ ¨~   ¨~ Ê¹ ¨~     ¨~ ÓÃ ¨~\n"
-"         ¨¨~¨~¨~¨~¨~¨    ¨¨~¨~¨~¨~¨~¨   ¨¨~¨~¨~¨~¨~¨    ¨¨~¨~¨~¨~¨~¨\n"
-"          ¨~¨~¨~¨~¨~     ¨~¨~¨~¨~¨~     ¨~¨~¨~¨~¨~     ¨~¨~¨~¨~¨~  \n"
-"        | | | |    | | |    | | |   | | | |   \n"
-"\n"
-"                               iTravel\n"
-"¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î¡î\n";
-inline const char *about_info = R"(
-       iTravel v0.2
-==========================
-¿ª·¢Õß:
-	@YeVII
-	@zyounan
-	@shizia_047
-±àÒëÈÕÆÚ:
-	2019/5/29
-==========================
+//æ³¨æ„ï¼šæ‡’å¾—å†å¼€ä¸€ä¸ªcppå†™å®šä¹‰äº†ï¼Œå› æ­¤ä½¿ç”¨äº†C++17çš„å†…è”å˜é‡
+//MSVCç¼–è¯‘æ—¶è¯·åœ¨å‚æ•°ååŠ ä¸Š/std:c++17
+inline const char *Welcome =                                                         
+R"(
+                  ,----,                                                         
+                ,/   .`|                                                         
+              ,`   .'  :                                                 ,--,    
+  ,--,      ;    ;     /                                               ,--.'|    
+,--.'|    .'___,/    ,'    __  ,-.                                     |  | :    
+|  |,     |    :     |   ,' ,'/ /|                    .---.            :  : '    
+`--'_     ;    |.';  ;   '  | |' |    ,--.--.       /.  ./|    ,---.   |  ' |    
+,' ,'|    `----'  |  |   |  |   ,'   /       \    .-' . ' |   /     \  '  | |    
+'  | |        '   :  ;   '  :  /    .--.  .-. |  /___/ \: |  /    /  | |  | :    
+|  | :        |   |  '   |  | '      \__\/: . .  .   \  ' . .    ' / | '  : |__  
+'  : |__      '   :  |   ;  : |      ," .--.; |   \   \   ' '   ;   /| |  | '.'| 
+|  | '.'|     ;   |.'    |  , ;     /  /  ,.  |    \   \    '   |  / | ;  :    ; 
+;  :    ;     '---'       ---'     ;  :   .'   \    \   \ | |   :    | |  ,   /  
+|  ,   /                           |  ,     .-./     '---"   \   \  /   ---`-'   
+ ---`-'                             `--`---'                  `----'             
+                                                                                 
+--------------------------------------------------------------------------------------------------
+			i LOVE Travel
 )";
-inline const char *cTitle = "iTravel v0.2";
+inline const char *about_info = R"(
+                           iTravel v0.3
+==========================+===========================================+
+å¼€å‘äººå‘˜:                   æŒ‡å¯¼æ•™å¸ˆ:                                     
+	@YeVII                		@æ²ƒç„±                                   
+	@zyounan              	                                           
+	@shizia_047                                                         
+ç¼–è¯‘æ—¥æœŸ:                   github:                                     
+	2019/6/3              		https://github.com/ourbigwork/iTravel   
+==========================+===========================================+
+)";
+inline const char *cTitle = "iTravel v0.3";
 inline const char *currentPath = ".\\", *userDataFileName = ".\\userData.dat",
 *favFilename = ".\\myFav.dat", *feedFilename = ".\\Feedback.dat", *BackFilename = ".\\Back.dat";
-inline const char *tUser = "ÓÃ»§:", *tInvaildUser = "ÓÃ»§Ãû²»´æÔÚ£¬ÇëÖØĞÂÊäÈë",
-*tPass = "ÃÜÂë", *tWrongPass = "ÃÜÂë´íÎó£¬ÇëÖØĞÂÊäÈë:", *tSuccessLogin = "µÇÂ¼³É¹¦!";
-inline const wchar_t *tPhone = L"ÊÖ»úºÅÂë:", *tRegister = L"×¢²á", *tInputUser = L"ÇëÊäÈëÓÃ»§Ãû£º",
-*tUsernameInvaild = L"¸ÃÓÃ»§ÃûÒÑ±»×¢²á£¬ÇëÖØĞÂÊäÈë", *tInputPhone = L"ÇëÊäÈëµç»°ºÅÂë:",
-*tInvaildPhone = L"ºÅÂë³¤¶ÈÓĞÎó£¬Çë²éÖ¤ºóÖØĞÂÊäÈë", *tInputPassword = L"ÇëÊäÈëÃÜÂë£º",
-*tPasswordAgain = L"ÇëÔÙ´ÎÊäÈëÃÜÂë£º", *tFailedCheckPassword = L"Á½´ÎÊäÈëµÄÃÜÂë²»ÏàÍ¬,ÔÙ´ÎÊäÈëÃÜÂë£º",
-*tRegisterSuccess = L"×¢²á³É¹¦£¡";
-inline const wchar_t *reviseInfo = L"ĞŞ¸Ä¸öÈËĞÅÏ¢", *tRemaining = L"Ê£Óà´ÎÊı:", *tChangeSuccess = L"ĞŞ¸Ä³É¹¦£¡";
-inline const wchar_t *FailedTOOMANY = L"ÃÜÂë¶à´ÎÊäÈë´íÎó£¬ÑéÖ¤Ê§°Ü£¡", *AuthFailed = L"ÈÏÖ¤Ê§°Ü£¡";
-inline const wchar_t *tInputOrigin = L"ÇëÊäÈëÔ­ÃÜÂë:";
+inline const char *tUser = "ç”¨æˆ·:", *tInvaildUser = "ç”¨æˆ·åä¸å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š",
+*tPass = "å¯†ç ", *tWrongPass = "å¯†ç é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:", *tSuccessLogin = "ç™»å½•æˆåŠŸ!";
+inline const wchar_t *tPhone = L"æ‰‹æœºå·ç :", *tRegister = L"æ³¨å†Œ", *tInputUser = L"è¯·è¾“å…¥ç”¨æˆ·åï¼š",
+*tUsernameInvaild = L"è¯¥ç”¨æˆ·åå·²è¢«æ³¨å†Œï¼Œè¯·é‡æ–°è¾“å…¥", *tInputPhone = L"è¯·è¾“å…¥ç”µè¯å·ç :",
+*tInvaildPhone = L"å·ç é•¿åº¦æœ‰è¯¯ï¼Œè¯·æŸ¥è¯åé‡æ–°è¾“å…¥", *tInputPassword = L"è¯·è¾“å…¥å¯†ç ï¼š",
+*tPasswordAgain = L"è¯·å†æ¬¡è¾“å…¥å¯†ç ï¼š", *tFailedCheckPassword = L"ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ç›¸åŒ,å†æ¬¡è¾“å…¥å¯†ç ï¼š",
+*tRegisterSuccess = L"æ³¨å†ŒæˆåŠŸï¼";
+inline const wchar_t *reviseInfo = L"ä¿®æ”¹ä¸ªäººä¿¡æ¯", *tRemaining = L"å‰©ä½™æ¬¡æ•°:", *tChangeSuccess = L"ä¿®æ”¹æˆåŠŸï¼";
+inline const wchar_t *FailedTOOMANY = L"å¯†ç å¤šæ¬¡è¾“å…¥é”™è¯¯ï¼ŒéªŒè¯å¤±è´¥ï¼", *AuthFailed = L"è®¤è¯å¤±è´¥ï¼";
+inline const wchar_t *tInputOrigin = L"è¯·è¾“å…¥åŸå¯†ç :";
 #endif
