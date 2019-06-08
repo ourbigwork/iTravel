@@ -1,70 +1,67 @@
 #pragma once
 #ifndef USER_INFO
 #define USER_INFO
-#include<iostream>
 #include "pch.h"
 #include "FileHelper.h"
-using namespace std;
 struct User_like {
 	std::string Where;
-	std::string What;	
-};
-istream& operator>>(istream& in, User_like&p)
-	{
-		in >> p.Where>>p.What;             //读
+	std::string What;
+	friend std::istream& operator>>(std::istream& in, User_like&p) {
+		in >> p.Where >> p.What;             //读
 		return in;
 	}
-ostream& operator<<(ostream& out, const User_like& p)
-	{
-	out << p.Where << std::endl;
-	out << p.What << std::endl;            //写,一定要换行符！！！
-	return out;
+	friend std::ostream& operator<<(std::ostream& out, const User_like& p) {
+		out << p.Where << std::endl;
+		out << p.What << std::endl;            //写,一定要换行符！！！
+		return out;
 	}
-User_like like;
-User_like readd;
+};
+extern User_like like;
+extern User_like readd;
 struct Key_Data {
 	std::string nicknamee;//用户名
 	std::string phonee;//电话号码
 	std::string passwordd;//密码
+
 };
 struct FeedbackWords {
 	//用户反馈
 	std::string words;
 	std::string customername;
+	friend std::istream& operator>>(std::istream& in, FeedbackWords&p){
+		in >> p.customername >> p.words;             //du
+		return in;
+	}
+	friend std::ostream& operator<<(std::ostream& out, const FeedbackWords& p){
+		out << p.customername << std::endl;
+		out << p.words << std::endl;           //xie
+		return out;
+	}
 };
-istream& operator>>(istream& in, FeedbackWords&p)
-{
-	in >> p.customername >> p.words;             //du
-	return in;
-}
-ostream& operator<<(ostream& out, const FeedbackWords& p)
-{
-	out << p.customername << std::endl; 
-	out<< p.words << std::endl;           //xie
-	return out;
-}
-FeedbackWords myfeedback;
+extern FeedbackWords myfeedback;
+
 struct Replywords {
 	//管理员回信
 	std::string customername;
 	std::string words;
+	friend std::istream& operator>>(std::istream& in, Replywords&p)
+	{
+		in >> p.customername >> p.words;             //du
+		return in;
+	}
+	friend std::ostream& operator<<(std::ostream& out, const Replywords& p)
+	{
+		out << p.customername << std::endl;
+		out << p.words << std::endl;           //xie
+		return out;
+	}
 };
-istream& operator>>(istream& in, Replywords&p)
-{
-	in >> p.customername >> p.words;             //du
-	return in;
-}
-ostream& operator<<(ostream& out, const Replywords& p)
-{
-	out << p.customername << std::endl;
-	out << p.words << std::endl;           //xie
-	return out;
-}
-FeedbackWords myreply;
-//使用者类
+extern FeedbackWords myreply;
+
+//用户类
 class User {
 public:
-	User(const User&) = delete;         //这几个是啥玩意
+	User(const User&) = delete;
 	User(const User&&) = delete;
 	User(const std::string& filename);
 	void Login();
@@ -78,10 +75,9 @@ protected:
 	int type;//	1 - 普通用户；2  - 管理员
 	userDataFileHelper file;
 };
-//用户类
-class Customer :public User{
+class Customer :public User {
 public:
-	void Regist();  //用来初始化文件
+	Customer() = default;//默认构造函数
 	void show();         //个人信息显示
 	void ilike();        //加入心愿单,要对文档操作，把添加的东西转换成代号写入文档
 	void showlike();     //显示心愿单，要对文档操作，把文档里的代号读取出来,变成可视的
@@ -90,9 +86,9 @@ public:
 	void read();         //查看管理员的回复
 protected:
 	std::string preferencef, preferencep;
+	//int experience;   //升级……？还有经验点数
 };
-//管理员类
-class Admin :public User{
+class Admin :public User {
 public:
 	void set();
 	void changeinformation();    //修改景点美食信息

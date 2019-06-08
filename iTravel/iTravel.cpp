@@ -1,10 +1,9 @@
 ﻿#include "CConsole.h"
+#include "pch.h"
 #include "Train.h"
 #include "Scenic.h"
 #include "Hotel.h"
 #include "UserInfo.h"
-
-#include "pch.h"
 #include "constStr.h"
 #include "ReflectFactory.h"
 
@@ -56,7 +55,7 @@ namespace Reflect {
 				OutputSpecific(Index);
 				break;
 			case 3:
-				srand(time(0));
+				srand(time(NULL));
 				RandomRecommand();
 				RandomRecommand();
 				RandomRecommand();

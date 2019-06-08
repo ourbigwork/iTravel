@@ -3,7 +3,6 @@
 #define Console_H_ZYN
 #include "pch.h"
 #include <gdiplus.h>
-//#include "constStr.h"
 #pragma comment(lib,"Gdiplus.lib")
 //	CConsole Class 
 /*

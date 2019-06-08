@@ -135,7 +135,7 @@ public:
 		console << " 三等(" << seat[2][1] << "￥)" << seat[2][0] << "张 " << endl;
 	}
 	void outputRoute() {
-		for (int i = 0; i < route.size(); i++) {
+		for (size_t i = 0; i < route.size(); i++) {
 			console << i + 1 << "   "; route[i].outStationInfo();
 			console << endl;
 		}
@@ -160,7 +160,7 @@ public:
 		必须提供准确的车次和日期才可以
 		所以没有排序
 		*/
-		int i = 0;
+		size_t i = 0;
 		while (i < timetable.size()) {
 			console << i + 1 << ":";
 			//输出时，如果是首发、终点站，则正常输出，否则在中间输出到本站的时间
@@ -249,7 +249,7 @@ void addTrain() {
 	Train *temp = new Train;
 	temp->changeInfo();//读入车辆信息
 	TrainList.push_back(temp);
-	for (int i = 0; i < temp->route.size(); i++) {
+	for (size_t i = 0; i < temp->route.size(); i++) {
 		//枚举经过的车站
 		int index = findStation(temp->route[i].stationName);//查询车站所在下标
 		if (index == -1) {
@@ -289,7 +289,7 @@ void findResult(const string & s, const string & e) {
 	//Start = console.UTF82ANSI(Start);
 	//End = console.UTF82ANSI(End);
 	//不考虑换乘
-	for (int i = 0; i < TrainList.size(); i++) {
+	for (size_t i = 0; i < TrainList.size(); i++) {
 		StartIndex = TrainList[i]->findRoute(Start);
 		EndIndex = TrainList[i]->findRoute(End);
 		if (StartIndex == -1 || EndIndex == -1) continue; //此车不经过起点或终点
@@ -305,18 +305,18 @@ void findResult(const string & s, const string & e) {
 	//考虑换乘
 	StartIndex = findStation(Start);
 	EndIndex = findStation(End);
-	for (int i = 0; i < StationList[StartIndex]->timetable.size(); i++) {
+	for (size_t i = 0; i < StationList[StartIndex]->timetable.size(); i++) {
 		//这里枚举的是经过起点的所有车
 		Train *Index = StationList[StartIndex]->timetable[i];
 		int q = Index->findRoute(End);
 		if (q == -1) {//不能直达才考虑换乘
-			for (int j = 0; j < StationList[EndIndex]->timetable.size(); j++) {
+			for (size_t j = 0; j < StationList[EndIndex]->timetable.size(); j++) {
 				//枚举换乘的车辆
 				Train *NIndex = StationList[EndIndex]->timetable[j];
 			//	console<<"Attempting:"<<Index->TrainName<<"->"<<NIndex->TrainName<<endl;
 				int p = NIndex->findRoute(Start);
 				if (p == -1)//不能直达
-					for (int k = 1; k < Index->route.size(); k++) {
+					for (size_t k = 1; k < Index->route.size(); k++) {
 					//	console<<"Here"<<endl;
 						//这里枚举在哪一站换乘
 						int r = NIndex->findRoute(Index->route[k].stationName);
@@ -336,22 +336,22 @@ void findResult(const string & s, const string & e) {
 
 //按发时最早排序 
 void sortResultEarly() {
-	for (int i = 0; i < Result.size(); i++)
-		for (int j = 1; j < Result.size(); j++)
+	for (size_t i = 0; i < Result.size(); i++)
+		for (size_t j = 1; j < Result.size(); j++)
 			if (Result[j].begTime < Result[j - 1].begTime) swap(Result[j], Result[j - 1]);
 }
 
 //按耗时最少排序 
 void sortResultFast() {
-	for (int i = 0; i < Result.size(); i++)
-		for (int j = 1; j < Result.size(); j++)
+	for (size_t i = 0; i < Result.size(); i++)
+		for (size_t j = 1; j < Result.size(); j++)
 			if (Result[j].endTime - Result[j].begTime < Result[j - 1].endTime - Result[j - 1].begTime) swap(Result[j], Result[j - 1]);
 }
 
 //输出结果
 void outputResult() {
 	console << endl << "共为您查到" << Result.size() << "条信息" << endl;
-	for (int i = 0; i < Result.size(); i++) {
+	for (size_t i = 0; i < Result.size(); i++) {
 		if (Result[i].second == NULL) {
 			console << Result[i].first->TrainName << "(直达)" << endl;
 			Result[i].first->outputSeat();
