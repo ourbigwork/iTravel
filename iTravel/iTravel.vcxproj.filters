@@ -15,47 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="constStr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ReflectFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Hotel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenic.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Train.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="UserInfo.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FileHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CConsole.h">
-      <Filter>头文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CConsole.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="iTravel.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FileHelper.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="UserInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

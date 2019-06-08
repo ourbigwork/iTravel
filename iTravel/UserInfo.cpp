@@ -3,8 +3,9 @@
 #include "CConsole.h"
 User_like like;
 User_like readd;
-FeedbackWords myreply;
 FeedbackWords myfeedback;
+Replywords myreply;
+int static hadReadFeedback;  //相当于文件的指针
 User::User(const std::string & Datafilename) {
 	file.ReopenFile(Datafilename);
 }
@@ -201,7 +202,9 @@ void User::Change() {
 }
 
 void User::Logout() {
-	Phone.clear(), Username.clear(), password.clear();
+	Phone.clear();
+	Username.clear(); 
+	password.clear();
 	return;
 }
 //------------------------------------------------------------------------------------------------
@@ -209,7 +212,31 @@ void User::Logout() {
 void Customer::show() {
 	using namespace std;
 }
-
+void Customer::judgelikecin(User_like&p)
+{
+	using namespace std;
+	fstream userlike;
+	string file_like_name;
+	file_like_name = Username + "的收藏夹";
+	userlike.open("d:\\" + file_like_name + ".dat", ios::in | ios::binary);
+	User_like tmp;
+	int flag = 0;
+	while (userlike >> tmp)
+	{
+		if ((tmp.What == p.What) && (tmp.Where == p.Where))
+			flag = 1;
+	}
+	userlike.close();
+	if (flag)
+		console << "已添加！" << endl;
+	else
+	{
+		userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::binary | ios::app);
+		userlike << p;
+		console << "添加成功！" << endl;
+		userlike.close();
+	}
+}
 void Customer::ilike() {
 	using namespace std;
 	console.ClearScreen();
@@ -217,13 +244,13 @@ void Customer::ilike() {
 	string file_like_name;
 	file_like_name = Username + "的收藏夹";
 	string getwhat, getwhere;
-								 //缺个获得景点信息的函数
-								 //想要查重
-	userlike.open("d:\\" + file_like_name + ".txt", ios::out | ios::in | ios::binary | ios::app);
+								 //缺个获得景点信息的函数，把地点什么的给上面那行的两个变量
+								 
+	userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::in | ios::binary | ios::app);
 	like.What = getwhat;
 	like.Where = getwhere;
-	userlike << like;
-	userlike.close();
+	judgelikecin(like);//查重判断是否加入
+	                      //close在函数里了
 }
 
 void Customer::showlike() {
@@ -233,7 +260,7 @@ void Customer::showlike() {
 	fstream userlike;
 	string file_like_name;
 	file_like_name = Username + "的收藏夹";
-	userlike.open("d:\\" + file_like_name + ".txt", ios::out | ios::in | ios::binary);
+	userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::in | ios::binary);
 	userlike.seekg(0);
 	while (userlike >> readd)
 	{
@@ -245,6 +272,9 @@ void Customer::showlike() {
 void Customer::comment() {
 	using namespace std;
 	console.ClearScreen();
+	string words;
+	cin >> words;
+	console << words;       //如何展示在相关页面上啊
 }
 
 void Customer::feedback() {
@@ -254,13 +284,12 @@ void Customer::feedback() {
 	string word;
 	console << "请写下您的反馈" << endl;
 	cin >> word;
-	console << word;
-							//缺一个展示在页面上的
+	console << word;			
 	myfeedback.customername = Username;
 	myfeedback.words = word;
 	string file_feedback_name;
 	file_feedback_name = "用户反馈";  //把评论从尾部写入文件
-	feedbackfile.open("d:\\" + file_feedback_name + ".txt", ios::out | ios::in | ios::binary | ios::app);
+	feedbackfile.open("d:\\" + file_feedback_name + ".dat", ios::out  | ios::binary | ios::app);
 	feedbackfile << myfeedback;
 	feedbackfile.close();
 }
@@ -270,50 +299,77 @@ void Customer::read() {
 	fstream replyfile;
 	string word;
 	string file_reply_name;
+	Replywords outTmp;
 	file_reply_name = Username + "收到的回复";
-	replyfile.open("d:\\" + file_reply_name + ".txt", ios::out | ios::in | ios::binary);
-	replyfile.seekg(0);
+	replyfile.open("d:\\" + file_reply_name + ".dat", ios::in | ios::binary);
 	console << "尊敬的" << Username << endl;
-	while (replyfile >> myreply)
+	while (replyfile >> outTmp)
 	{
-		console << readd.What << endl;
+		console << outTmp.words << endl;
 	}
 	replyfile.close();
 }
 //------------------------------------------------------------------------------------------------
-void Admin::set() {
-	using namespace std;
-}
-
 void Admin::changeinformation() {
 	using namespace std;
-	fstream replyfile;
-	string word;
-	string file_reply_name;
-	file_reply_name = Username + "收到的回复";
-	replyfile.open("d:\\" + file_reply_name + ".txt", ios::out | ios::in | ios::binary);
-	replyfile.seekg(0);
-	console << "尊敬的" << Username << endl;
-	while (replyfile >> myreply){
-		console << readd.What << endl;
+	
+
+}
+void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
+{
+	using namespace std;
+	int readFlag = 0;
+	fstream feedbackfile;
+	FeedbackWords inTmp;
+	int countt=0;
+	feedbackfile.open("d:\\用户反馈.dat", ios::in | ios::binary);
+	while ((feedbackfile >> inTmp) && (!readFlag))    //reflag用来每次只操作一次
+	{
+		if (countt == hadReadFeedbackk)
+		{
+			fstream replyfile;
+			Replywords outTmp;
+			FeedbackWords outTmpp;
+			outTmpp.customername = inTmp.customername;
+			outTmpp.words = inTmp.words;
+			console << "用户反馈：" << endl;
+			console << outTmpp.customername << endl;
+			console << outTmpp.words << endl;
+
+			string file_reply_name = outTmpp.customername + "收到的回复";
+			replyfile.open("d:\\" + file_reply_name + ".dat", ios::in | ios::binary| ios::app);
+			console << "输入您的回复:" << endl;
+			outTmp.customername = outTmpp.customername;
+			cin >> outTmp.words;
+			console << outTmp.words;
+			replyfile << outTmp;
+			replyfile.close();
+			readFlag = 1;
+			++hadReadFeedback;
+		}
+		++countt;
 	}
-	replyfile.close();
 }
 
 void Admin::reply() {
 	using namespace std;
 	fstream feedbackfile;
 	fstream replyfile; //feedbackfile打开来读，写入reply
-	string file_feedback_name; string cname;//获得用户名
+	string file_feedback_name; string cname; //获得用户名
 	file_feedback_name = "用户反馈";
-	feedbackfile.open("d:\\" + file_feedback_name + ".txt", ios::out | ios::in | ios::binary);
+	feedbackfile.open("d:\\" + file_feedback_name + ".dat", ios::out | ios::in | ios::binary);
+	FeedbackWords input;
+	int count = 0;
+	while (feedbackfile >> input)
+		++count;
+	feedbackfile.close();
+	int totalFeedback = count;
+	while (hadReadFeedback < totalFeedback)
+	{
+		readAndWrite(hadReadFeedback);
+	}
+	feedbackfile.close();
 
-
-
-
-	string file_reply_name;
-
-	file_reply_name = +"收到的回复";
 }
 
 
