@@ -29,12 +29,12 @@ struct FeedbackWords {
 	std::string words;
 	std::string customername;
 	friend std::istream& operator>>(std::istream& in, FeedbackWords&p){
-		in >> p.customername >> p.words;             //du
+		in >> p.customername >> p.words;             
 		return in;
 	}
 	friend std::ostream& operator<<(std::ostream& out, const FeedbackWords& p){
 		out << p.customername << std::endl;
-		out << p.words << std::endl;           //xie
+		out << p.words << std::endl;           
 		return out;
 	}
 };
@@ -46,17 +46,17 @@ struct Replywords {
 	std::string words;
 	friend std::istream& operator>>(std::istream& in, Replywords&p)
 	{
-		in >> p.customername >> p.words;             //du
+		in >> p.customername >> p.words;             
 		return in;
 	}
 	friend std::ostream& operator<<(std::ostream& out, const Replywords& p)
 	{
 		out << p.customername << std::endl;
-		out << p.words << std::endl;           //xie
+		out << p.words << std::endl;          
 		return out;
 	}
 };
-extern FeedbackWords myreply;
+extern Replywords myreply;
 
 //用户类
 class User {
@@ -79,6 +79,7 @@ class Customer :public User {
 public:
 	Customer() = default;//默认构造函数
 	void show();         //个人信息显示
+	void judgelikecin(User_like&p);//查重
 	void ilike();        //加入心愿单,要对文档操作，把添加的东西转换成代号写入文档
 	void showlike();     //显示心愿单，要对文档操作，把文档里的代号读取出来,变成可视的
 	void comment();      //发表评论，也要对文档操作。把写的东西存入文档
@@ -86,7 +87,6 @@ public:
 	void read();         //查看管理员的回复
 protected:
 	std::string preferencef, preferencep;
-	//int experience;   //升级……？还有经验点数
 };
 class Admin :public User {
 public:
