@@ -43,7 +43,7 @@ namespace Reflect {
 				cin >> s;
 				if (s == ".")return;
 				console << s << endl;
-				while (s != "北京" && s != "成都") {
+				while (s != "北京" && s != "成都" && s != "三亚" && s != "广州") {
 					console << "兄啊您输入的城市去不了呢……再来一次罢：";
 					cin >> s;
 					if (s == ".")return;
