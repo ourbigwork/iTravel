@@ -11,7 +11,7 @@ RegionClass类 地点类+指针， 用于构建链表的节点封装类
 
 注意：部分函数和头文件仅在windows下有效，中文部分在linux下会出现问题
 
-Region （RegionClass类 指针），储存所有景点信息的链表头
+::Region （RegionClass类 指针），储存所有景点信息的链表头
 RegionTail （RegionClass类 指针），储存所有景点信息的链表尾
 
 读入的景点信息放入Data文件内，
@@ -42,7 +42,7 @@ OutputRegion 输出完整信息
 OutputSpecific 输出城市信息
 findRegion 查找城市
 sortBy Heat/Price,Down/Up 根据不同关键字升降序排序
-Add/Delete Region/Scenic 增添/删除 景点/地区
+Add/Delete ::Region/Scenic 增添/删除 景点/地区
 RandomRecommand 随机推荐
 TODO： 模糊搜索(?)
 */
@@ -61,6 +61,7 @@ public:
 	double heat;//景点热度
 	Scenic() {
 		cin >> name >> heat >> price;
+		name = console.UTF82ANSI(name);
 	}
 };
 
@@ -79,45 +80,49 @@ public:
 	RegionClass *next;
 	RegionClass() {
 		cin >> name >> len;
-		next = nullptr;
+		name = console.UTF82ANSI(name);
+		next = NULL;
 	}
 };
 
 int RegionClass::tot_Region = 0;
-RegionClass *RegionClass::Region = nullptr;
-RegionClass *RegionClass::RegionTail = nullptr;
+RegionClass *Region = NULL;
+RegionClass *RegionTail = NULL;
 
 
 /*
+
 OutLoad 用于产生读取数据的动画效果
 延迟一秒显得更加真实
+
 */
 void OutLoad() {
 	console.ClearScreen();
-	//system("cls");
 	console << "Loading data..." << endl;
 	Sleep(1000);//顿挫感
 	console.ClearScreen();
 }
+
+
 void LoadData() {
 	// Openfile;
-	freopen(".\\Data.txt","r",stdin);
-	OutLoad();
-	cin >> RegionClass::Region->tot_Region;
-	for (int i = 1; i <= RegionClass::Region->tot_Region; i++) {
+//	OutLoad();
+	freopen(".\\ScenicData.txt","r",stdin);
+	cin >> ::Region->tot_Region;
+	for (int i = 1; i <= ::Region->tot_Region; i++) {
 		RegionClass *tempRegion = new RegionClass();
-		if (i == 1) RegionClass::Region = tempRegion;
-		else RegionClass::RegionTail->next = tempRegion;
-		RegionClass::RegionTail = tempRegion;
+		if (i == 1) ::Region = tempRegion;
+		else RegionTail->next = tempRegion;
+		RegionTail = tempRegion;
 		for (int j = 1; j <= tempRegion->len; j++) {
 			tempRegion->p[j] = new Scenic();
 		}
 	}
-	Sleep(1000);//顿挫感
-	console << "Data load finished" << endl;
-	Sleep(1000);
-	console.ClearScreen();
 	freopen("CON","r",stdin);
+	/*Sleep(1000);//顿挫感
+	console<<"Data load finished"<<endl;
+	Sleep(1000);
+	system("cls");*/
 }
 
 /*
@@ -134,12 +139,12 @@ void LoadData() {
 */
 void OutputRegion() {
 
-	RegionClass *index = RegionClass::Region;
-	if (index == nullptr) {
+	RegionClass *index = ::Region;
+	if (index == NULL) {
 		console << "Warning: No data found." << endl;
 		return;
 	}
-	while (index != nullptr) {
+	while (index != NULL) {
 		console << "|-" << index->name << endl;
 		for (int i = 1; i <= index->len; i++) {
 			console << "  |-";
@@ -158,7 +163,7 @@ void OutputRegion() {
 
 */
 void OutputSpecific(RegionClass *index) {
-	if (index == nullptr) return;
+	if (index == NULL) return;
 	else {
 		console << index->name << endl;
 		for (int i = 1; i <= index->len; i++) {
@@ -170,13 +175,13 @@ void OutputSpecific(RegionClass *index) {
 
 /*
 
-根据输入的城市名寻找对应在Region链表中的位置
+根据输入的城市名寻找对应在::Region链表中的位置
 
 */
 RegionClass* FindRegion(string targetRegion) {
-	RegionClass *ret = RegionClass::Region;
-	while (ret != nullptr && ret->name != targetRegion) ret = ret->next;
-	if (ret == nullptr) console << "Warning : No such region found." << endl;
+	RegionClass *ret = ::Region;
+	while (ret != NULL && ret->name != targetRegion) ret = ret->next;
+	if (ret == NULL) console << "Warning : No such Region found." << endl;
 	return ret;
 }
 /*
@@ -206,7 +211,7 @@ bool cmp_Price_Up(Scenic *a, Scenic *b) {
 /*
 
 接口输入: 某个城市的RegionClass指针
-可以是Region 链表中的某一项
+可以是::Region 链表中的某一项
 这里的排序都是冒泡排序
 分别是：
 
@@ -251,9 +256,10 @@ void sortByPriceUp(RegionClass *index) {
 */
 void AddRegion() {
 	string InputS; cin >> InputS;
+	InputS = console.UTF82ANSI(InputS);
 	RegionClass *temp = FindRegion(InputS);
 	// 若地区已经存在 增加景点时直接添加。 
-	if (temp != nullptr) {
+	if (temp != NULL) {
 		int lenDelta; cin >> lenDelta;
 		for (int i = 1; i <= lenDelta; i++) {
 			temp->p[temp->len + i] = new Scenic();
@@ -264,11 +270,11 @@ void AddRegion() {
 	//添加地区不存在 新建链表节点放置链表尾 
 		for (int i = 1; i <= temp->len; i++)
 			temp->p[i] = new Scenic();
-		if (RegionClass::Region == nullptr)
-			RegionClass::Region = temp;
+		if (::Region == NULL)
+			::Region = temp;
 		else
-			RegionClass::RegionTail->next = temp;
-		RegionClass::RegionTail = temp;
+			RegionTail->next = temp;
+		RegionTail = temp;
 		temp->tot_Region++;//总的地区数++ 
 	}
 }
@@ -280,25 +286,25 @@ void AddRegion() {
 
 */
 void DeleteRegion(string InputS) {
-	RegionClass *Index = RegionClass::Region;
-	RegionClass *Target = RegionClass::Region->next;
+	RegionClass *Index = ::Region;
+	RegionClass *Target = ::Region->next;
 
-	//如果Region 链表头就是我们所删除的节点 
+	//如果::Region 链表头就是我们所删除的节点 
 	if (Index->name == InputS) {
-		RegionClass::Region = RegionClass::Region->next;
-		if (RegionClass::RegionTail->name == InputS)  //链表中只存在一个节点 且恰为想删除的节点 
-			RegionClass::RegionTail = RegionClass::Region = nullptr;
+		::Region = ::Region->next;
+		if (RegionTail->name == InputS)  //链表中只存在一个节点 且恰为想删除的节点 
+			RegionTail = ::Region = NULL;
 		free(Index); //Index 此时就是一开始的链表头 
 	}
 	else {
 		//目标节点不存在 或者 在非链表头节点
-		while (Target->name != InputS && Target != nullptr) {
+		while (Target->name != InputS && Target != NULL) {
 			Index = Target;
 			Target = Target->next;
 		}
-		if (Target == nullptr) {
+		if (Target == NULL) {
 			//目标节点未找到
-			console << "Warning : No such region found." << endl;
+			console << "Warning : No such ::Region found." << endl;
 			return;
 		}
 		else {
@@ -318,18 +324,18 @@ void DeleteRegion(string InputS) {
 void AddScenic(string InputS) {
 	RegionClass *Index = FindRegion(InputS);
 	//如果该城市并不存在 等价于新增一个城市，该城市仅有一个景点 
-	if (Index == nullptr) {
+	if (Index == NULL) {
 		Index = new RegionClass;
 		Index->name = InputS;
 		Index->len = 1;
 		Index->p[1] = new Scenic();
 		//以上：增加一个城市，一个景点 
-		if (RegionClass::Region == nullptr)
-			RegionClass::Region = Index;
+		if (::Region == NULL)
+			::Region = Index;
 		else
-			RegionClass::RegionTail->next = Index;
-		RegionClass::RegionTail = Index;
-		RegionClass::RegionTail->tot_Region++;
+			RegionTail->next = Index;
+		RegionTail = Index;
+		RegionTail->tot_Region++;
 	}
 	else {
 		Index->len++;
@@ -347,9 +353,10 @@ void AddScenic(string InputS) {
 
 void DeleteScenic(string InputS) {
 	RegionClass *Index = FindRegion(InputS);
-	if (Index == nullptr) return;
+	if (Index == NULL) return;
 	else {
 		cin >> InputS;//这里的InputS是景点名 不是地区名
+		InputS = console.UTF82ANSI(InputS);
 		bool isfound = false;//状态 是否找到  
 		for (int i = 1; i <= Index->len; i++) {
 			if (Index->p[i]->name == InputS)
@@ -372,18 +379,13 @@ void DeleteScenic(string InputS) {
 
 */
 void RandomRecommand() {
-	srand(time(0));
-	int MagicN = rand() % RegionClass::Region->tot_Region;
-	RegionClass *Index = RegionClass::Region;
-	while (MagicN--)
+	int MagicN = rand() % ::Region->tot_Region;
+	RegionClass *Index = ::Region;
+	while (MagicN) {
 		Index = Index->next;
+		MagicN--;
+	}
 	MagicN = 1 + rand() % Index->len;
 	console << "随机推荐：" << Index->name << " " << Index->p[MagicN]->name << endl;
 }
 
-/*
-
-TODO：
-模糊搜索
-
-*/

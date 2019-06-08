@@ -1,10 +1,10 @@
-
+ï»¿
 /*
 
 [2019-05-18]
-Hotel.h ÂÃ¹İ ¾ÆµêÀà Í·ÎÄ¼ş
-Ê¹ÓÃ·½·¨£º½«Hotel.h·ÅÈë±àÒëÆ÷ÖĞµÄÍ·ÎÄ¼ş¼ĞÖĞ
-		ÔÚcppÔ´ÎÄ¼şÉÏ¼ÓÈë #include<Hotel.h> ¼´¿É
+Hotel.h æ—…é¦† é…’åº—ç±» å¤´æ–‡ä»¶
+ä½¿ç”¨æ–¹æ³•ï¼šå°†Hotel.hæ”¾å…¥ç¼–è¯‘å™¨ä¸­çš„å¤´æ–‡ä»¶å¤¹ä¸­
+		åœ¨cppæºæ–‡ä»¶ä¸ŠåŠ å…¥ #include<Hotel.h> å³å¯
 
 */
 #include "pch.h"
@@ -18,45 +18,49 @@ using namespace std;
 
 #undef GuestRoom
 
-class GuestRoom {//¿Í·¿Àà 
+class GuestRoom {//å®¢æˆ¿ç±» 
 public:
-	string name;//·¿¼äÊôĞÔ
-	int capacity;//·¿¼äÈİÁ¿ ÄÜ×¡¶àÉÙÈË 
-	int price;//¼Û¸ñ 
+	string name;//æˆ¿é—´å±æ€§
+	int capacity;//æˆ¿é—´å®¹é‡ èƒ½ä½å¤šå°‘äºº 
+	int price;//ä»·æ ¼ 
 };
 
-class GuestRoomClass : public GuestRoom {// GuestRoomClassÊÇ¼Ì³ĞGuestRoom ÓÃÓÚÉú³ÉÁ´±íµÄ½ÚµãÀà 
+class GuestRoomClass : public GuestRoom {// GuestRoomClassæ˜¯ç»§æ‰¿GuestRoom ç”¨äºç”Ÿæˆé“¾è¡¨çš„èŠ‚ç‚¹ç±» 
 public:
 	GuestRoomClass *next;
 	GuestRoomClass() {
 		cin >> name >> capacity >> price;
-		next = nullptr;
+		name = console.UTF82ANSI(name);
+		next = NULL;
+	}
+
+	void printInfo() {
+		console << name << ' ' << capacity << ' ' << price << endl;
 	}
 };
 
-class Hotel {//¾ÆµêÀàÀà 
+class Hotel {//é…’åº—ç±»ç±» 
 public:
-	string name;//¾ÆµêÃû 
-	string contact;//ÁªÏµ·½Ê½ 
-	string address;//µØÖ·
-	GuestRoomClass *RoomList;//·¿¼äÁ´±íÍ· 
-	GuestRoomClass *RoomListTail;//·¿¼äÁ´±íÎ² 
+	string name;//é…’åº—å 
+	string address;//åœ°å€
+	GuestRoomClass *RoomList;//æˆ¿é—´é“¾è¡¨å¤´ 
+	GuestRoomClass *RoomListTail;//æˆ¿é—´é“¾è¡¨å°¾ 
 };
 
-class HotelClass :public Hotel {//HotelClass ÊÇ¼Ì³ĞHotel ÓÃÓÚÉú³ÉÁ´±íµÄ½ÚµãÀà 
+class HotelClass :public Hotel {//HotelClass æ˜¯ç»§æ‰¿Hotel ç”¨äºç”Ÿæˆé“¾è¡¨çš„èŠ‚ç‚¹ç±» 
 public:
 	HotelClass *next;
 
 	/*
 
-	Ìí¼ÓÒ»¸ö·¿¼ä ,×¢ÒâÕâÀïÊÇÕë¶ÔÄ³Ò»¸ö¾ÆµêÌí¼Ó
-	¿¼ÂÇµ½ name ²¢²»ÊÇÃû×Ö ¶øÊÇÊôĞÔ£¨´ó´²·¿ ±ê×¼¼äÖ®Àà£© ËùÒÔÃ»ÓĞ²éÖØ
-	·µ»ØÕâ¸ö·¿¼äµÄÖ¸Õë
+	æ·»åŠ ä¸€ä¸ªæˆ¿é—´ ,æ³¨æ„è¿™é‡Œæ˜¯é’ˆå¯¹æŸä¸€ä¸ªé…’åº—æ·»åŠ 
+	è€ƒè™‘åˆ° name å¹¶ä¸æ˜¯åå­— è€Œæ˜¯å±æ€§ï¼ˆå¤§åºŠæˆ¿ æ ‡å‡†é—´ä¹‹ç±»ï¼‰ æ‰€ä»¥æ²¡æœ‰æŸ¥é‡
+	è¿”å›è¿™ä¸ªæˆ¿é—´çš„æŒ‡é’ˆ
 
 	*/
 	GuestRoomClass* addRoom() {
 		GuestRoomClass *tempPoint = new GuestRoomClass();
-		if (this->RoomList == nullptr) this->RoomList = tempPoint;
+		if (this->RoomList == NULL) this->RoomList = tempPoint;
 		else RoomListTail->next = tempPoint;
 		RoomListTail = tempPoint;
 		return tempPoint;
@@ -64,9 +68,9 @@ public:
 
 	/*
 
-	É¾³ıÒ»¸ö·¿¼ä£¬×¢ÒâÕâÀïÊÇÕë¶ÔÄ³Ò»¸ö¾ÆµêÌí¼Ó
-	½Ó¿ÚÊÇÒ»¸ö·¿¼äÀàÖ¸Õë ÒÔ×öµ½¾«È·É¾³ı
-	·µ»ØÒ»¸öbool ±íÊ¾ÊÇ·ñ³É¹¦É¾³ı
+	åˆ é™¤ä¸€ä¸ªæˆ¿é—´ï¼Œæ³¨æ„è¿™é‡Œæ˜¯é’ˆå¯¹æŸä¸€ä¸ªé…’åº—æ·»åŠ 
+	æ¥å£æ˜¯ä¸€ä¸ªæˆ¿é—´ç±»æŒ‡é’ˆ ä»¥åšåˆ°ç²¾ç¡®åˆ é™¤
+	è¿”å›ä¸€ä¸ªbool è¡¨ç¤ºæ˜¯å¦æˆåŠŸåˆ é™¤
 
 	*/
 	bool deleteRoom(GuestRoomClass *Input) {
@@ -74,11 +78,11 @@ public:
 		GuestRoomClass *INext = Index->next;
 		if (RoomList == Input) {
 			RoomList = RoomList->next;
-			if (RoomListTail == Input) RoomListTail = nullptr;
+			if (RoomListTail == Input) RoomListTail = NULL;
 			free(Input);
 			return true;
 		}
-		while (Index != nullptr) {
+		while (Index != NULL) {
 			if (INext == Input) {
 				Index->next = INext->next;
 				if (INext == RoomListTail) RoomListTail = Index;
@@ -87,128 +91,139 @@ public:
 			}
 			else {
 				Index = Index->next;
-				if (INext != nullptr) INext = INext->next;
+				if (INext != NULL) INext = INext->next;
 			}
 		}
 		return false;
 	}
 
 	HotelClass() {
-		cin >> name >> contact >> address;
-		next = nullptr;
+		cin >> name >> address;
+		name = console.UTF82ANSI(name);
+		address = console.UTF82ANSI(address);
+		RoomList = RoomListTail = NULL;
+		next = NULL;
 	}
 	void printInfo() {
-		console << name << " " << address << " " << contact << endl;
+		console << name << "  @" << address << endl;
 	}
 };
 
-class City {//×¢ÒâÕâÀïºÍScenic.hµÄRegionÀàÊÇ²»Í¬µÄ ÓÃCityÇø·Ö 
+class City {//æ³¨æ„è¿™é‡Œå’ŒScenic.hçš„Regionç±»æ˜¯ä¸åŒçš„ ç”¨CityåŒºåˆ† 
 public:
-	string name;//³ÇÊĞÃû
-	HotelClass *HotelList;//¾ÆµêÁ´±íÍ·
-	HotelClass *HotelListTail;//¾ÆµêÁ´±íÎ² 
+	string name;//åŸå¸‚å
+	HotelClass *HotelList;//é…’åº—é“¾è¡¨å¤´
+	HotelClass *HotelListTail;//é…’åº—é“¾è¡¨å°¾ 
 };
 
-class CityClass :public City {//City Class ÊÇ¼Ì³ĞCity ÓÃÓÚÉú³ÉÁ´±íµÄ½ÚµãÀà
+class CityClass :public City {//City Class æ˜¯ç»§æ‰¿City ç”¨äºç”Ÿæˆé“¾è¡¨çš„èŠ‚ç‚¹ç±»
 public:
 	CityClass *next;
 
 	/*
 
-	Ìí¼ÓÒ»¸ö¾Æµê£¬×¢ÒâÕâÀïÊÇÕë¶ÔÄ³¸ö³ÇÊĞ¶øÑÔÌí¼Ó
-	ËùÒÔ±ØĞëÔÚCityClassÀàµÄÊµÀıÄÚ·ÃÎÊ
-	×¢Òâ£¬¼´Ê¹ÊÇÍ¬Ò»¸ö³ÇÊĞÍ¬Ãû¾ÆµêÒ²¿ÉÄÜÓĞºÜ¶à
-	ËùÒÔÕâÀïÃ»ÓĞ²éÖØ Ö±½ÓÌí¼Ó¼´¿É
-	·µ»ØÕâ¸ö¾ÆµêµÄÖ¸Õë
+	æ·»åŠ ä¸€ä¸ªé…’åº—ï¼Œæ³¨æ„è¿™é‡Œæ˜¯é’ˆå¯¹æŸä¸ªåŸå¸‚è€Œè¨€æ·»åŠ 
+	æ‰€ä»¥å¿…é¡»åœ¨CityClassç±»çš„å®ä¾‹å†…è®¿é—®
+	æ³¨æ„ï¼Œå³ä½¿æ˜¯åŒä¸€ä¸ªåŸå¸‚åŒåé…’åº—ä¹Ÿå¯èƒ½æœ‰å¾ˆå¤š
+	æ‰€ä»¥è¿™é‡Œæ²¡æœ‰æŸ¥é‡ ç›´æ¥æ·»åŠ å³å¯
+	è¿”å›è¿™ä¸ªé…’åº—çš„æŒ‡é’ˆ
 
 	*/
 	HotelClass* addHotel() {
 		HotelClass *tempPoint = new HotelClass();
-		if (HotelList == nullptr)  HotelList = tempPoint;
+		if (HotelList == NULL)  HotelList = tempPoint;
 		else HotelListTail->next = tempPoint;
 		HotelListTail = tempPoint;
-		return HotelListTail;
+		return tempPoint;
 	}
 
 	/*
 
-	É¾³ıÒ»¸ö¾Æµê£¬×¢ÒâÕâÀïÊÇÕë¶ÔÄ³¸ö³ÇÊĞ¶øÑÔÉ¾³ı
-	ËùÒÔ±ØĞëÔÚCityclassÀàµÄÊµÀıÄÚ·ÃÎÊ
-	¶øÕâÀïµÄ½Ó¿Ú±ØĞëÊÇÒ»¸öHotelClassµÄÖ¸ÕëÒÔ¾«È·É¾³ı
-	·µ»ØÒ»¸öboolĞÍ ±íÊ¾ÊÇ·ñ³É¹¦É¾³ı
+	åˆ é™¤ä¸€ä¸ªé…’åº—ï¼Œæ³¨æ„è¿™é‡Œæ˜¯é’ˆå¯¹æŸä¸ªåŸå¸‚è€Œè¨€åˆ é™¤
+	æ‰€ä»¥å¿…é¡»åœ¨Cityclassç±»çš„å®ä¾‹å†…è®¿é—®
+	è€Œè¿™é‡Œçš„æ¥å£å¿…é¡»æ˜¯ä¸€ä¸ªHotelClassçš„æŒ‡é’ˆä»¥ç²¾ç¡®åˆ é™¤
+	è¿”å›ä¸€ä¸ªboolå‹ è¡¨ç¤ºæ˜¯å¦æˆåŠŸåˆ é™¤
 
 	*/
 	bool deleteHotel(HotelClass *Input) {
 		HotelClass *Index = HotelList, *INext = HotelList->next;
 		if (Index == Input) {
-			//Á´±íÍ·É¾³ı
+			//é“¾è¡¨å¤´åˆ é™¤
 			HotelList = HotelList->next;
-			if (HotelListTail == Input) HotelListTail = nullptr;
+			if (HotelListTail == Input) HotelListTail = NULL;
 			free(Index); return true;
 		}
-		while (Index != nullptr) {
+		while (Index != NULL) {
 			if (INext == Input) {
 				Index->next = INext->next;
-				if (INext == HotelListTail) HotelListTail = Index;//Á´±íÎ²É¾³ı 
+				if (INext == HotelListTail) HotelListTail = Index;//é“¾è¡¨å°¾åˆ é™¤ 
 				free(INext);
 				return true;
 			}
 			else {
 				Index = Index->next;
-				if (INext != nullptr) INext = INext->next;
+				if (INext != NULL) INext = INext->next;
 			}
 		}
 		return false;
 	}
+
+	void printCityInfo() {
+		console << name << endl;
+		HotelClass *Index = HotelList;
+		while (Index != NULL) {
+			console << " -> ";
+			Index->printInfo();
+			Index = Index->next;
+		}
+		console << endl;
+	}
 };
-CityClass* CityList = nullptr;//µØµãÁ´±íÍ·
-CityClass* CityListTail = nullptr;//µØµãÁ´±íÎ²
+CityClass* CityList = NULL;//åœ°ç‚¹é“¾è¡¨å¤´
+CityClass* CityListTail = NULL;//åœ°ç‚¹é“¾è¡¨å°¾
 
 /*
 
-²éÕÒÒ»¸ö³ÇÊĞ£¬·µ»ØÆä¶ÔÓ¦µÄÁ´±í½Úµã(CityList)Ö¸Õë
-Èç¹û²»´æÔÚ ·µ»Ønullptr
-½Ó¿Ú£º³ÇÊĞÃûstring
+æŸ¥æ‰¾ä¸€ä¸ªåŸå¸‚ï¼Œè¿”å›å…¶å¯¹åº”çš„é“¾è¡¨èŠ‚ç‚¹(CityList)æŒ‡é’ˆ
+å¦‚æœä¸å­˜åœ¨ è¿”å›NULL
+æ¥å£ï¼šåŸå¸‚åstring
 
 */
 CityClass* findCity(string targetS) {
 	CityClass *Index = CityList;
-	if (Index == nullptr)
-		console << "Warning:No such city found." << endl;
-	else {
-		while (Index != nullptr && Index->name != targetS) {
+	if (Index != NULL)
+		while (Index != NULL && Index->name != targetS) {
 			Index = Index->next;
 		}
-	}
 	return Index;
 }
 
 /*
 
-²éÕÒÒ»¸ö¾Æµê
-×¢Òâ ¸÷µØ¿ÉÄÜÓĞÍ¬ÃûµÄ¾Æµê£¬ËùÒÔÒª°ÑÍ¬ÃûµÄÈ«Êä³ö
-½Ó¿Ú£º¾ÆµêÃûstring
-Êä³ö£ºÒ»¸öresultHotelÀàĞÍ×é³ÉµÄÁ´±í£¬Á´±íÖĞÃ¿Ò»¸ö½Úµã¶¼´ú±íÒ»¸öHotel
-¸ÃÁ´±íÃûÎª findHotelList ,Ò²ÊÇÍ·½ÚµãÖ¸Õë
+æŸ¥æ‰¾ä¸€ä¸ªé…’åº—
+æ³¨æ„ å„åœ°å¯èƒ½æœ‰åŒåçš„é…’åº—ï¼Œæ‰€ä»¥è¦æŠŠåŒåçš„å…¨è¾“å‡º
+æ¥å£ï¼šé…’åº—åstring
+è¾“å‡ºï¼šä¸€ä¸ªresultHotelç±»å‹ç»„æˆçš„é“¾è¡¨ï¼Œé“¾è¡¨ä¸­æ¯ä¸€ä¸ªèŠ‚ç‚¹éƒ½ä»£è¡¨ä¸€ä¸ªHotel
+è¯¥é“¾è¡¨åä¸º findHotelList ,ä¹Ÿæ˜¯å¤´èŠ‚ç‚¹æŒ‡é’ˆ
 
 */
 struct resultHotel {
 	HotelClass *HotelPointer;
 	resultHotel *next;
-	CityClass *Super;//ÕâÊÇÒ»¸öÓÃÀ´·ÃÎÊ¸¸Ç×½ÚµãµÄÖ¸Õë
+	CityClass *Super;//è¿™æ˜¯ä¸€ä¸ªç”¨æ¥è®¿é—®çˆ¶äº²èŠ‚ç‚¹çš„æŒ‡é’ˆ
 }*findHotelList, *findHotelTail;
 
 /*
 
-ÏòfindHotelListÁ´±í×îºóÃæ²åÈëÒ»¸öInsertPointËùÖ¸ÏòµÄ½Úµã
+å‘findHotelListé“¾è¡¨æœ€åé¢æ’å…¥ä¸€ä¸ªInsertPointæ‰€æŒ‡å‘çš„èŠ‚ç‚¹
 
 */
-void resHotelInsert(HotelClass *InsertPoint, CityClass *Father) {//¶ÔresultHotel²åÈë½Úµã 
+void resHotelInsert(HotelClass *InsertPoint, CityClass *Father) {//å¯¹resultHotelæ’å…¥èŠ‚ç‚¹ 
 	resultHotel *tempPoint = new resultHotel;
 	tempPoint->HotelPointer = InsertPoint;
-	tempPoint->next = nullptr;
+	tempPoint->next = NULL;
 	tempPoint->Super = Father;
-	if (findHotelList == nullptr)
+	if (findHotelList == NULL)
 		findHotelList = tempPoint;
 	else
 		findHotelTail->next = tempPoint;
@@ -216,11 +231,11 @@ void resHotelInsert(HotelClass *InsertPoint, CityClass *Father) {//¶ÔresultHotel
 }
 
 void findHotel(string targetS) {
-	findHotelList = findHotelTail = nullptr;
+	findHotelList = findHotelTail = NULL;
 	CityClass *Index = CityList;
-	while (Index != nullptr) {
-		HotelClass *HIndex = Index->HotelList;// HIndex Ã¶¾ÙÊÇÄÄÒ»¸ö¾Æµê
-		while (HIndex != nullptr) {
+	while (Index != NULL) {
+		HotelClass *HIndex = Index->HotelList;// HIndex æšä¸¾æ˜¯å“ªä¸€ä¸ªé…’åº—
+		while (HIndex != NULL) {
 			if (HIndex->name == targetS)
 				resHotelInsert(HIndex, Index);
 			HIndex = HIndex->next;
@@ -230,12 +245,12 @@ void findHotel(string targetS) {
 
 /*
 
-Êä³öfindHotelListÖĞµÄĞÅÏ¢
+è¾“å‡ºfindHotelListä¸­çš„ä¿¡æ¯
 
 */
 void outputHotelFind() {
 	resultHotel *Index = findHotelList;
-	while (Index != nullptr) {
+	while (Index != NULL) {
 		console << Index->Super->name << ":";
 		Index->HotelPointer->printInfo();
 		Index = Index->next;
@@ -244,29 +259,31 @@ void outputHotelFind() {
 
 /*
 
-Ìí¼ÓÒ»¸ö³ÇÊĞ£¬½Ó¿Ú£º³ÇÊĞÃû
-Èç¹û³ÇÊĞ²»´æÔÚÔòÌí¼Ó³ÇÊĞ
-·µ»ØµÄÊÇÕâ¸ö³ÇÊĞµÄÖ¸Õë
+æ·»åŠ ä¸€ä¸ªåŸå¸‚ï¼Œæ¥å£ï¼šåŸå¸‚å
+å¦‚æœåŸå¸‚ä¸å­˜åœ¨åˆ™æ·»åŠ åŸå¸‚
+è¿”å›çš„æ˜¯è¿™ä¸ªåŸå¸‚çš„æŒ‡é’ˆ
 
 */
 
 CityClass* addCity(string InputS) {
 	CityClass *tempPoint = findCity(InputS);
-	if (tempPoint == nullptr) {
+	if (tempPoint == NULL) {
 		tempPoint = new CityClass;
 		tempPoint->name = InputS;
-		tempPoint->next = nullptr;
-		if (CityList == nullptr) CityList = tempPoint;
+		tempPoint->next = NULL;
+		if (CityList == NULL) CityList = tempPoint;
 		else CityListTail->next = tempPoint;
 		CityListTail = tempPoint;
+
+		tempPoint->HotelList = tempPoint->HotelListTail = NULL;
 	}
 	return tempPoint;
 }
 
 /*
 
-É¾³ıÒ»¸ö³ÇÊĞ£¬½Ó¿Ú£º³ÇÊĞÃû
-·µ»ØÒ»¸öboolĞÍ±íÊ¾ÊÇ·ñ³É¹¦É¾³ı
+åˆ é™¤ä¸€ä¸ªåŸå¸‚ï¼Œæ¥å£ï¼šåŸå¸‚å
+è¿”å›ä¸€ä¸ªboolå‹è¡¨ç¤ºæ˜¯å¦æˆåŠŸåˆ é™¤
 
 */
 bool deleteCity(string InputS) {
@@ -276,100 +293,125 @@ bool deleteCity(string InputS) {
 
 /*
 
-¶ÁÈ¡Êı¾İ
-Êı¾İÎÄ¼şÒªÇó£º
-µÚÒ»ĞĞ±íÊ¾µØÇøÊı ½ÓÏÂÀ´ÃèÊöÒ»¸öµØÇøĞÅÏ¢
+è¯»å–æ•°æ®
+æ•°æ®æ–‡ä»¶è¦æ±‚ï¼š
+ç¬¬ä¸€è¡Œè¡¨ç¤ºåœ°åŒºæ•° æ¥ä¸‹æ¥æè¿°ä¸€ä¸ªåœ°åŒºä¿¡æ¯
 
-	¶ÔÓÚÃ¿¸öµØÇø µÚÒ»ĞĞ³ÇÊĞÃû ºó½ÓÊı×Ö±íÊ¾¾Æµê¸öÊı
-	½ÓÏÂÀ´ÃèÊö¾ÆµêĞÅÏ¢
+	å¯¹äºæ¯ä¸ªåœ°åŒº ç¬¬ä¸€è¡ŒåŸå¸‚å åæ¥æ•°å­—è¡¨ç¤ºé…’åº—ä¸ªæ•°
+	æ¥ä¸‹æ¥æè¿°é…’åº—ä¿¡æ¯
 
-		¶ÔÓÚÃ¿¸ö¾Æµê µÚÒ»ĞĞÃèÊö»ù±¾ĞÅÏ¢ ºó½ÓÊı×Ö±íÊ¾·¿¼äÊı
-		½ÓÏÂÀ´ÃèÊö·¿¼äĞÅÏ¢
+		å¯¹äºæ¯ä¸ªé…’åº— ç¬¬ä¸€è¡Œæè¿°åŸºæœ¬ä¿¡æ¯ åæ¥æ•°å­—è¡¨ç¤ºæˆ¿é—´æ•°
+		æ¥ä¸‹æ¥æè¿°æˆ¿é—´ä¿¡æ¯
 
-			¶ÔÓÚÃ¿¸ö·¿¼ä ½öÒ»ĞĞÃèÊö·¿¼äµÄ»ù±¾ĞÅÏ¢
+			å¯¹äºæ¯ä¸ªæˆ¿é—´ ä»…ä¸€è¡Œæè¿°æˆ¿é—´çš„åŸºæœ¬ä¿¡æ¯
 
 */
 void HotelLoadData() {
-	//openFile
+	freopen(".\\HotelData.txt", "r", stdin);
 	string InputS;
-	int totCity = 0; cin >> totCity;//µØÇøÊı 
+	int totCity = 0; cin >> totCity;//åœ°åŒºæ•°
 	while (totCity--) {
 		cin >> InputS;
+		InputS = console.UTF82ANSI(InputS);
 		CityClass *Index = addCity(InputS);
-		int totHotel = 0; cin >> totHotel;//¾ÆµêÊı
+		int totHotel = 0; cin >> totHotel;//é…’åº—æ•°
 		while (totHotel--) {
 			HotelClass *HIndex = Index->addHotel();
-			int totRoom = 0; cin >> totRoom;//·¿¼äÊı
+			int totRoom = 0; cin >> totRoom;//æˆ¿é—´æ•° 
 			while (totRoom--)
 				HIndex->addRoom();
 		}
 	}
+	freopen("CON", "r", stdin);
 }
 
 /*
 
-¸ù¾İÓÃ»§ÊäÈëÉ¸Ñ¡ºÏÊÊµÄ±ö¹İ
-½Ó¿Ú£º³ÇÊĞÃûstring ÈËÊıint ÌìÊıint
-Êä³öÒ»¸ö optionHotelÀà Êı×é£¬ÊÇËùÓĞ¿É¹©Ñ¡ÔñµÄ¾ÆµêÒÔ¼°ËùĞè¼Û¸ñ
-ÕâÀïÃ»ÓĞÑ¡ÓÃÁ´±íÊÇÒòÎªÅÅĞò²»·½±ã£¬¶øÇÒ²»Ò××÷ºóĞø´¦Àí£¬
-ÊÇ¿Õ¼ä¸´ÔÓ¶È »»È¡Ê±¼ä¸´ÔÓ¶ÈºÍ±à³Ì¸´ÔÓ¶ÈµÄ×÷·¨
+æ ¹æ®ç”¨æˆ·è¾“å…¥ç­›é€‰åˆé€‚çš„å®¾é¦†
+æ¥å£ï¼šåŸå¸‚åstring äººæ•°int å¤©æ•°int
+è¾“å‡ºä¸€ä¸ª optionHotelç±» æ•°ç»„ï¼Œæ˜¯æ‰€æœ‰å¯ä¾›é€‰æ‹©çš„é…’åº—ä»¥åŠæ‰€éœ€ä»·æ ¼
+è¿™é‡Œæ²¡æœ‰é€‰ç”¨é“¾è¡¨æ˜¯å› ä¸ºæ’åºä¸æ–¹ä¾¿ï¼Œè€Œä¸”ä¸æ˜“ä½œåç»­å¤„ç†ï¼Œ
+æ˜¯ç©ºé—´å¤æ‚åº¦ æ¢å–æ—¶é—´å¤æ‚åº¦å’Œç¼–ç¨‹å¤æ‚åº¦çš„ä½œæ³•
 
-Èôµ±Ç°µØÇøÎŞºÏÊÊµÄ¾Æµê£¨ÎŞ¾Æµê ºÍ ÎŞÂú×ãÌõ¼şµÄ¾Æµê£© Êä³öÏàÓ¦ÌáÊ¾
-Èô´æÔÚºÏÊÊµÄ¾Æµê£¬°´Ä³ÖÖË³ĞòÊä³öÊÊºÏµÄ¾ÆµêÒÔ¼°ËùĞèÒªµÄ¼ÛÇ®
-µ±Í¬Ò»¾Æµê´æÔÚ²»Í¬µÄ½â¾ö·½°¸Ê±£¬ÓÅÏÈ¿¼ÂÇ¼ÛÇ®×îµÍµÄ
+è‹¥å½“å‰åœ°åŒºæ— åˆé€‚çš„é…’åº—ï¼ˆæ— é…’åº— å’Œ æ— æ»¡è¶³æ¡ä»¶çš„é…’åº—ï¼‰ è¾“å‡ºç›¸åº”æç¤º
+è‹¥å­˜åœ¨åˆé€‚çš„é…’åº—ï¼ŒæŒ‰æŸç§é¡ºåºè¾“å‡ºé€‚åˆçš„é…’åº—ä»¥åŠæ‰€éœ€è¦çš„ä»·é’±
+å½“åŒä¸€é…’åº—å­˜åœ¨ä¸åŒçš„è§£å†³æ–¹æ¡ˆæ—¶ï¼Œä¼˜å…ˆè€ƒè™‘ä»·é’±æœ€ä½çš„
 
-ÉÏÊöµÄÄ³ÖÖË³ĞòÖ¸µÄÊÇ£º£¨Ä¬ÈÏ£©ÖĞĞò £¬£¨·ÇÄ¬ÈÏ£©¼Û¸ñÉı½µĞò
-ÖĞĞòÖ¸µÄÊÇ¼Û¸ñ°´Ë³ĞòÅÅÁĞºóÓÅÏÈÊä³öÖĞ¼ä¼ÛÎ»±È½ÏºÏÀí
-È»ºóÒ»Ç°Ò»ºóµØÊä³öÍêÕûµÄ¾ÆµêĞòÁĞ
+ä¸Šè¿°çš„æŸç§é¡ºåºæŒ‡çš„æ˜¯ï¼šï¼ˆé»˜è®¤ï¼‰ä¸­åº ï¼Œï¼ˆéé»˜è®¤ï¼‰ä»·æ ¼å‡é™åº
+ä¸­åºæŒ‡çš„æ˜¯ä»·æ ¼æŒ‰é¡ºåºæ’åˆ—åä¼˜å…ˆè¾“å‡ºä¸­é—´ä»·ä½æ¯”è¾ƒåˆç†
+ç„¶åä¸€å‰ä¸€ååœ°è¾“å‡ºå®Œæ•´çš„é…’åº—åºåˆ—
 
 */
 
 struct optionHotel {
-	HotelClass *HotelPointer;//Ö¸Ïò¾Æµê
-	int price;//¼ÛÇ® (³ËÌìÊıºó) 
+	HotelClass *HotelPointer;//æŒ‡å‘é…’åº—
+	int price;//ä»·é’± (ä¹˜å¤©æ•°å) 
 }HotelOptions[30];
 
-int totOption = 0;//ËùÓĞ¿É¹©Ñ¡ÔñµÄ¾ÆµêÊı 
+int totOption = 0;//æ‰€æœ‰å¯ä¾›é€‰æ‹©çš„é…’åº—æ•° 
 
 /*
 
-calcMinPrice ¼ÆËã¶ÔÓÚ¸ø¶¨¾ÆµêÔÚ¿Í»§Ö¸¶¨µÄÌõ¼şÏÂ×îÉÙ´ú¼Û»¨·Ñ
-int ĞÍ·µ»Ø£¬·µ»Ø×îÉÙ´ú¼Û»¨·Ñ£¬Ä¬ÈÏ´óÓÚ0.Èç¹û·µ»ØÖµÎª-1
-ÔòËµÃ÷´Ë¾ÆµêÃ»ÓĞºÏÊÊµÄ¿Í·¿¹©Èë×¡ ÉÏ²ã²Ëµ¥½«ÒÀ´ÎÎªÒÀ¾İ½øĞĞÏÂÒ»²½²Ù×÷
+calcMinPrice è®¡ç®—å¯¹äºç»™å®šé…’åº—åœ¨å®¢æˆ·æŒ‡å®šçš„æ¡ä»¶ä¸‹æœ€å°‘ä»£ä»·èŠ±è´¹
+int å‹è¿”å›ï¼Œè¿”å›æœ€å°‘ä»£ä»·èŠ±è´¹ï¼Œé»˜è®¤å¤§äº0.å¦‚æœè¿”å›å€¼ä¸º-1
+åˆ™è¯´æ˜æ­¤é…’åº—æ²¡æœ‰åˆé€‚çš„å®¢æˆ¿ä¾›å…¥ä½ ä¸Šå±‚èœå•å°†ä¾æ¬¡ä¸ºä¾æ®è¿›è¡Œä¸‹ä¸€æ­¥æ“ä½œ
 
-¶¯Ì¬¹æ»®Ë¼Ïë£¬Éèf(n)±íÊ¾n¸öÈËÈë×¡ËùÒªµÄ×îĞ¡»¨·Ñ
-Ã¶¾Ù·¿¼ä£¬Éè·¿¼äi¿É×¡CiÈË£¬¼Û¸ñPi ÓĞ
-for_all i:1->inf, f(n)=min { f(n-Ci) + Pi }
-ÔòËµÃ÷ÓĞÁ½²ãÑ­»· Ò»²ãÎªÈËÊıÑ­»· for( peopleNum: 1->n)
-¶ş²ãÎª·¿¼äÃ¶¾ÙÑ­»· ÓÉÓÚÊÇÁ´±í Ã»ÓĞÏÂ±ê µ«Ô­ÀíÊÇÏàÍ¬µÄ
-³õÊ¼»¯: for_all i:1->inf, f(i)=inf , f(0) = 0
-×îºó ans=mfor_all i:n->inf ,min{f(i)}
+åŠ¨æ€è§„åˆ’æ€æƒ³ï¼Œè®¾f(n)è¡¨ç¤ºnä¸ªäººå…¥ä½æ‰€è¦çš„æœ€å°èŠ±è´¹
+æšä¸¾æˆ¿é—´ï¼Œè®¾æˆ¿é—´iå¯ä½Ciäººï¼Œä»·æ ¼Pi ,é‚£ä¹ˆå¯¹äºæ‰€æœ‰çš„i<=Ci,éœ€è¦æ¯”è¾ƒf(i)å’ŒPiçš„å€¼
+å®é™…æ„ä¹‰è¡¨ç°ä¸ºï¼šiä¸ªäººä½å®¹é‡ä¸ºCiï¼Œä»·æ ¼ä¸ºPiçš„æˆ¿é—´çš„èŠ±è´¹ç°åœ¨æ˜¯å¦æ›´å°
+å¯¹äºæ‰€æœ‰iï¼Œå¦‚æœf(i+Ci)<f(i)+Pi,æ›´æ–°f(i+Ci)çš„å€¼
+å®é™…æ„ä¹‰è¡¨ç°ä¸ºï¼šå­˜åœ¨ä¸€ä¸ªæ›´ä¼˜çš„æ–¹æ¡ˆä½¿å¾—ä½i+Ciä¸ªäººçš„èŠ±é’±æ•°æ›´å°‘
+
+**ç„¶è€Œè¿™é‡Œæœ‰ä¸€ä¸ªå¾ˆä¸¥é‡çš„é—®é¢˜ å‡è®¾åªæœ‰ä¸€ä¸ªå•äººé—´ ä»·æ ¼ä¸º108 å…¶ä»–éƒ½æ˜¯åŒäººé—´ä¸”ä»·æ ¼è´µçš„ç¦»è°±ï¼ˆä¸Šåƒï¼‰
+å¦‚æœæŒ‰ä¸Šè¿°æ–¹æ³•è¿›è¡Œæ“ä½œå‘ç°å…¥ä½3äºº çš„æœ€å°ä»·æ ¼ä¸º316,å¾ˆæ˜æ˜¾æ˜¯ä¸å¯¹çš„ åŸå› åœ¨äº
+æ›´æ–°f(i+Ci)æ—¶ï¼Œå¾ˆæœ‰å¯èƒ½f(i)æ˜¯å·²ç»æ›´æ–°è¿‡äº†çš„å€¼ï¼Œç­‰ä»·äºç”¨äº†è¯¥æˆ¿é—´ä»¥åå†ç”¨ä¸€æ¬¡ æ˜¯ä¸å¯¹çš„
+å› æ­¤æˆ‘ä»¬ä½¿ç”¨æ»šåŠ¨æ•°ç»„æ¥æ›¿æ¢ã€‚è®¾cnt=0ï¼Œæ¯æ¬¡ä¸1å¼‚æˆ–ï¼Œcntè¡¨ç¤ºå½“å‰å¤„ç†çš„æ•°ç»„è¡Œ
+æ¯æ¬¡æ›´æ–°æ˜¯cnt^1çš„å€¼æ›´æ–°cntçš„å€¼ è¿™æ ·å°±ä¸ä¼šå‡ºé”™
 
 */
 int calcMinPrice(HotelClass *Index, int peopleNum, int dayNum) {
-	int f[15], ret = 2147483647;
-	//×î¶àÊ®¸öÈËÍ¬Ê±Èë×¡£¨À´×ÔĞ¯³Ì¹ÙÍø£©
-	//¿ÉÄÜ´æÔÚÒ»ÖÖ¹©×¡ÈËÊı¸ü¶àÇÒ»¨Ç®¸üÉÙµÄ·½°¸ Òò´ËÒª¶à¼Ó¼¸Î» 
-	f[0] = 0;
-	for (int i = 1; i <= 15; i++) f[i] = 2147483647;
-	for (int pNum = 1; pNum < 15; pNum++) {
-		GuestRoomClass *ite = Index->RoomList;
-		while (ite != nullptr)
-			f[pNum] = min(f[pNum], f[max(pNum - ite->capacity, 0)] + ite->price);
-		if (pNum >= peopleNum)
-			ret = min(ret, f[pNum]);
+	int f[2][20], ret = 2147483647;
+	//æœ€å¤šåä¸ªäººåŒæ—¶å…¥ä½ï¼ˆæ¥è‡ªæºç¨‹å®˜ç½‘ï¼‰
+	//å¯èƒ½å­˜åœ¨ä¸€ç§ä¾›ä½äººæ•°æ›´å¤šä¸”èŠ±é’±æ›´å°‘çš„æ–¹æ¡ˆ å› æ­¤è¦å¤šåŠ å‡ ä½ 
+	f[0][0] = f[1][0] = 0;
+	for (int i = 1; i <= 19; i++) f[0][i] = f[1][i] = 200000000;
+	GuestRoomClass *ite = Index->RoomList;
+	int cnt = 0;
+	while (ite != NULL) {
+	//	ite->printInfo();
+		for (int i = 1; i < 20 - ite->capacity; i++) {
+			if (i <= ite->capacity) f[cnt][i] = min(f[cnt ^ 1][i], ite->price);
+			if (f[cnt ^ 1][i] + ite->price < f[cnt ^ 1][i + ite->capacity])
+				f[cnt][i + ite->capacity] = f[cnt ^ 1][i] + ite->price;
+			if (i >= peopleNum) ret = min(ret, f[cnt][i]);
+		}
+		ite = ite->next;
+//		for(int i=1;i<20;i++) console<<f[cnt][i]<<' ';console<<endl;
+		cnt ^= 1;
 	}
+	/*for(int pNum=1;pNum<15;pNum++){
+		GuestRoomClass *ite = Index->RoomList;
+		while(ite != NULL){
+			f[pNum] = min (f[pNum] , f[max (pNum-ite->capacity, 0)]+ite->price);
+			ite=ite->next;
+		}
+		if(pNum>=peopleNum)
+			ret = min(ret,f[pNum]);
+	}*/
 	if (ret > 100000000) ret = -1;
-	else return ret;
+
+//	console<<"============================="<<endl;
+	return ret;
 }
 
 void findOption(string cityString, int peopleNum, int dayNum) {
 	totOption = 0;
 	CityClass *Index = findCity(cityString);
-	if (Index != nullptr) {
+	if (Index != NULL) {
 		HotelClass *HIndex = Index->HotelList;
-		while (HIndex != nullptr) {//±éÀú¾ÆµêÁĞ±í 
-			//´ËÊ±HIndex Ö¸ÏòµÄÊÇÒ»¸ö¾Æµê
+		while (HIndex != NULL) {//éå†é…’åº—åˆ—è¡¨ 
+			//æ­¤æ—¶HIndex æŒ‡å‘çš„æ˜¯ä¸€ä¸ªé…’åº—
+
 			int retNum = calcMinPrice(HIndex, peopleNum, dayNum);
 			if (retNum) {
 				++totOption;
@@ -382,10 +424,10 @@ void findOption(string cityString, int peopleNum, int dayNum) {
 }
 /*
 
-½«struct optionHotelµÄHotelOptionsÊı×éÅÅĞò
-¹Ø¼ü×Ö·Ö±ğÎª ¼Û¸ñ´ÓµÍµ½¸ß£¬ ¼Û¸ñ´Ó¸ßµ½µÍ £¬ÖĞĞòÅÅĞò
-ËùÎ½ÖĞĞòÒÑ¾­ÔÚÉÏÎÄÖĞ¸ø³ö¶¨Òå£¬ ÕâÀïÊ¹ÓÃalgorithm ¿âµÄ qsortº¯Êı½øĞĞÅÅĞò
-ĞèÒªÍê³Écmpº¯Êı£¬ÓÃÀ´±È½Ï£¬×÷ÎªÊÇ·ñ½»»»µÄÒÀ¾İ
+å°†struct optionHotelçš„HotelOptionsæ•°ç»„æ’åº
+å…³é”®å­—åˆ†åˆ«ä¸º ä»·æ ¼ä»ä½åˆ°é«˜ï¼Œ ä»·æ ¼ä»é«˜åˆ°ä½ ï¼Œä¸­åºæ’åº
+æ‰€è°“ä¸­åºå·²ç»åœ¨ä¸Šæ–‡ä¸­ç»™å‡ºå®šä¹‰ï¼Œ è¿™é‡Œä½¿ç”¨algorithm åº“çš„ qsortå‡½æ•°è¿›è¡Œæ’åº
+éœ€è¦å®Œæˆcmpå‡½æ•°ï¼Œç”¨æ¥æ¯”è¾ƒï¼Œä½œä¸ºæ˜¯å¦äº¤æ¢çš„ä¾æ®
 
 */
 
@@ -409,12 +451,12 @@ void sortByPriceDown() {
 	qsort(HotelOptions + 1, totOption, sizeof(optionHotel), cmpPriceDown);
 }
 
-void sortDefalut() {
+void sortDefault() {
 	sortByPriceUp();
-	//ÏÈÉıĞòÅÅÁĞ
+	//å…ˆå‡åºæ’åˆ—
 	vector<optionHotel> tempArray;
 	int i = totOption / 2, j = 1 + totOption / 2;
-	//´ÓÖĞ¼äÏòÁ½±ßÀ©Õ¹ 
+	//ä»ä¸­é—´å‘ä¸¤è¾¹æ‰©å±• 
 	while (i >= 1 || j <= totOption) {
 		if (i >= 1) tempArray.push_back(HotelOptions[i--]);
 		if (j <= totOption)tempArray.push_back(HotelOptions[j++]);
@@ -423,4 +465,89 @@ void sortDefalut() {
 		HotelOptions[i] = tempArray[i - 1];
 }
 
+/*
+é…’åº—æ¨¡ç³Šæœç´¢
+è€ƒè™‘åˆ°æ˜¯ä¸­æ–‡å­—ç¬¦ å ä¸¤ä¸ªå­—èŠ‚ æ‰€ä»¥ä¸¤ä¸¤ä¸€å¤„ç†
+ä¾‹å¦‚ è®¾string s="å¹¿å·", é‚£ä¹ˆ s[0]s[1] ä¸º 'å¹¿'ï¼Œs[2]s[3]ä¸º'å·'
+ç°åœ¨è€ƒè™‘ä¸¤ä¸ªå­—ç¬¦çš„ç›¸ä¼¼åº¦æ¯”è¾ƒï¼Œè®¾å‰ä¸€ä¸ªå­—ç¬¦ç¼–ç æ˜¯i1,i2 åä¸€ä¸ªä¸ºj1,j2
+ç”±äºä¸­æ–‡æ˜¯åŒºå—ç  (é å‰åŒºå—)åŒºå†…æŒ‰æ‹¼éŸ³æ’åº /(é ååŒºå—)åŒºå†…æŒ‰åæ—éƒ¨é¦–æ’åº
+é å‰åŒºä¸»è¦æ˜¯å¸¸ç”¨å­—ï¼Œé ååŒºä¸»è¦æ˜¯ç”Ÿåƒ»å­—ã€‚è€Œå‡ºç°åœ¨é…’åº—åç§°ä¸Šçš„å­—å¤§å¤šæ˜¯å¸¸ç”¨å­—ï¼Œä¹Ÿå³åœ¨é å‰çš„åŒºå—ï¼Œ
+æ‰€ä»¥i1å’Œj1çš„å·®è·å½±å“å› å­å¤§ï¼Œi2,j2çš„å·®è·å½±å“å› å­å°ã€‚
+æˆ‘ä»¬è®¾ä¸¤ä¸ªæƒé‡w1,w2, dif = w1*|i1-j1| + w2*|i2-j2| æ¥è®¡ç®—ä¸¤ä¸ªä¸­æ–‡å­—ç¬¦çš„å·®å¼‚åº¦
+dif è¶Šå¤§ è¯´æ˜å·®åˆ«è¶Šå¤§ï¼Œè¶Šå°åˆ™è¯´æ˜è¶Šç›¸ä¼¼ã€‚ä¸”æ˜æ˜¾çš„æœ‰difçš„å–å€¼æ˜¯[0,+oo)
+å¯ä»¥ç”¨æŒ‡æ•°å‡½æ•°æ˜ å°„æˆåŒ¹é…åº¦match,å³match = k^dif,(0<k<1),
+kç¡®å®šmatchçš„ä¸‹é™é€Ÿåº¦ ï¼Œæ˜ å°„åmatch å–å€¼æ˜¯ (0~1],å®Œå…¨ä¸€æ ·çš„ä¸¤ä¸ªå­—ç¬¦match=1
+æˆ‘ä»¬è®¡ç®—è¾“å…¥å­—ç¬¦ä¸²ä¸­çš„æ¯ä¸€ä¸ªå­—ç¬¦å’Œå¯¹åº”é…’åº—çš„åç§°çš„åŒ¹é…åº¦çš„å¹³å‡å€¼ä½œä¸ºè¯¥é…’åº—å¯¹è¾“å…¥çš„åŒ¹é…åº¦
+è€ƒè™‘åˆ°åœ°åå½±å“ï¼Œçœ‹è¾“å…¥å†…æ˜¯å¦æœ‰åŸå¸‚åã€‚å¦‚æœè¾“å…¥æœ‰åŸå¸‚åï¼Œåˆ™åº”ä¼˜å…ˆè€ƒè™‘è¯¥åŸå¸‚çš„é…’åº—
+ä¹Ÿå°±æ˜¯è¯´ åŸå¸‚ æ‰€å çš„æ¯”é‡éå¸¸å¤§ï¼Œè®¾è¿™é‡Œå¾—å‡ºçš„CityMatchä¹Ÿæ˜¯å¤„äº(0,1]
+ç„¶è€Œ CityMatchçš„å–å€¼(ç•¥å»ç²¾åº¦)åªä¼šå‡ºç°ä¸‰ç§æƒ…å†µï¼š1 æˆ– 0.5 æˆ– 0
+è€Œå¦‚æœæ˜¯1æˆ–0.5åˆ™åº”è¯¥æé«˜åŸå¸‚çš„æ¯”é‡ï¼ˆå‡ºç°äº†å®Œæ•´æˆ–éƒ¨åˆ†åŸå¸‚åï¼‰
+å°†CityMatchå¼€æ ¹å·ï¼Œä½œä¸ºæƒé‡äºé…’åº—åŒ¹é…åº¦ç›¸ä¹˜ï¼Œä½œä¸ºæœ€ç»ˆçš„åŒ¹é…åº¦ç»“æœï¼ŒæŒ‰è¯¥ç»“æœæ’åºå³å¯
+
+exp:
+
+	string s="èƒŒæ™¯åˆ«å¢…";//åŒ—äº¬ï¼Ÿ
+	fuzzySearch(s);
+	outputFuzzy();
+*/
+struct fuzzyNode {
+	HotelClass *Node;
+	double sMark;//ç›¸ä¼¼åº¦ 
+};
+vector<fuzzyNode> fuzzyRes;
+
+bool cmp_sMark(fuzzyNode L, fuzzyNode R) {
+	return L.sMark > R.sMark;
+}
+
+
+double calcSimilarity(string L, string R) {
+	//å¯¹ä¸­æ–‡å¤„ç†
+	int Ll = L.length(), Rl = R.length();
+	//cout<<Ll<<' '<<Rl<<endl;
+	double w1 = 0.65, w2 = 0.35;
+	double totM = 0.0;
+	for (int i = 0; i * 2 < Ll; i++) {//LåŒ¹é…ä¸² Ræ¨¡å¼ä¸² 
+		double maxMatch = 0;
+		int i1 = (int)L[i * 2], i2 = (int)L[i * 2 + 1];
+		for (int j = 0; j * 2 < Rl; j++) {
+			int j1 = (int)R[j * 2], j2 = (int)R[j * 2 + 1];
+			double dif = w1 * abs(i1 - j1) + w2 * abs(i2 - j2);
+			//cout<<i1<<' '<<i2<<' '<<j1<<' '<<j2<<endl;
+			double mat = pow(0.6, dif);
+			maxMatch = mat > maxMatch ? mat : maxMatch;
+		}//cout<<maxMatch<<endl;
+		totM += maxMatch;
+	}
+	totM = totM * 2 / (double)Ll;//æ¶ˆé™¤é•¿åº¦å½±å“
+	//cout<<L<<' '<<R<<' '<<totM<<endl;cout<<"======"<<endl;
+	return totM;
+}
+
+void fuzzySearch(string InputS) {
+	CityClass *CIndex = CityList;
+	double Match = 0;
+	while (CIndex != NULL) {//æšä¸¾åŸå¸‚
+		double CityMatch = 0;
+		HotelClass *HIndex = CIndex->HotelList;
+		CityMatch = sqrt(calcSimilarity(CIndex->name, InputS));//åŸå¸‚åŒ¹é…åº¦ 
+		while (HIndex != NULL) {//æšä¸¾é…’åº— è®¡ç®—é…’åº—åŒ¹é…åº¦ 
+			double HotelMatch = calcSimilarity(InputS, HIndex->name);
+			Match = CityMatch * HotelMatch;
+			fuzzyRes.push_back(fuzzyNode{ HIndex, Match });
+			HIndex = HIndex->next;
+		}
+		CIndex = CIndex->next;
+	}
+	sort(fuzzyRes.begin(), fuzzyRes.end(), cmp_sMark);
+}
+
+void outputFuzzy() {
+	cout << "æ‚¨æ˜¯ä¸æ˜¯åœ¨æŸ¥æ‰¾ï¼š";
+	fuzzyRes[0].Node->printInfo();
+	cout << endl << "æœç´¢ç»“æœ(ç›¸ä¼¼åº¦å‰10):" << endl;
+	for (int i = 0; i < 10; i++) {
+		cout << fuzzyRes[i].Node->name << " ç›¸ä¼¼åº¦: " << fuzzyRes[i].sMark << endl;
+	}
+}
 

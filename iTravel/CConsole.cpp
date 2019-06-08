@@ -9,6 +9,7 @@ namespace std {
 	}
 	CConsole::CConsole(const string& consoleTitle) :tlock(lockk), ConsoleTitle(consoleTitle) {
 		using Gdiplus::Status;
+		//system("chcp 54936");
 		Status res = GdiplusStartup(&token, &gdiplusStartupInput, nullptr);
 		if (res != Status::Ok)
 			throw runtime_error("Failed to initialize Gdiplus!");
@@ -74,8 +75,8 @@ namespace std {
 		updateScreen();
 	}
 	//宽字符版本，不常用就不走缓冲区了（就是输出欢迎字符画用的
-	void CConsole::WriteText(const wstring & out){
-		WriteConsoleW(background,out.c_str(),out.length(),nullptr,nullptr);
+	void CConsole::WriteText(const wstring & out) {
+		WriteConsoleW(background, out.c_str(), out.length(), nullptr, nullptr);
 		updateScreen();
 	}
 	//不经过缓冲区
@@ -87,6 +88,23 @@ namespace std {
 	}
 	HANDLE CConsole::getCurrentConsoleHandle() {
 		return foreground;
+	}
+
+	std::string CConsole::UTF82ANSI(const std::string &str) {
+		int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+		wchar_t * pwBuf = new wchar_t[nwLen + 1]; 
+		memset(pwBuf, 0, nwLen * 2 + 2);
+		MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), pwBuf, nwLen);
+		int nLen = WideCharToMultiByte(CP_ACP, 0, pwBuf, -1, NULL, NULL, NULL, NULL);
+		char * pBuf = new char[nLen + 1];
+		memset(pBuf, 0, nLen + 1);
+		WideCharToMultiByte(CP_ACP, 0, pwBuf, nwLen, pBuf, nLen, NULL, NULL);
+		std::string retStr = pBuf;
+		delete[]pBuf;
+		delete[]pwBuf;
+		pBuf = NULL;
+		pwBuf = NULL;
+		return retStr;
 	}
 	void CConsole::getCurrentCursor() {
 		getCurrentCursor(foreground);

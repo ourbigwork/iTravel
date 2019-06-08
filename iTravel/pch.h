@@ -5,6 +5,8 @@
 #include <bitset>
 #include <complex>
 #include <conio.h>
+#include <io.h>
+#include <cstdio>
 #include <deque>
 #include <exception>
 #include <fstream>

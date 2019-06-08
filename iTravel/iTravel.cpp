@@ -13,9 +13,188 @@ using namespace std;
 Reflect::Worker ReflectWorker;
 std::CConsole std::console(cTitle);
 User user(".\\userinfo.dat");
-bool isLogin = false;
+bool isLogin = false, sdataload = false, tdata = false, hdata = false;
 namespace Reflect {
 	using std::console;
+	class scenic :public ReflectBase, DynamicCreator<scenic> {
+	private:
+		void printSubMenu() {
+			if (!sdataload)
+				LoadData();
+			sdataload = true;
+			console.ClearScreen();
+			console << "好康的……是新景点噢？" << endl <<
+				"1 - 输出全部景点\t2 - 查询目的地\t3 - 随机推荐\n" << "请输入命令代号：";
+			int k;
+			cin >> k;
+			while (k < 1 || k > 3) {
+				console << k << endl;
+				console << "这↑里↓还没有被开发，再来一次吧：";
+				cin >> k;
+			}
+			console << k << endl;
+			string s;
+			RegionClass * Index;
+			switch (k) {
+			case 1:
+				OutputRegion();
+				break;
+			case 2:
+				console << "您要去哪呢？";
+				cin >> s;
+				if (s == ".")return;
+				console << s << endl;
+				while (s != "北京" && s != "成都") {
+					console << "兄啊您输入的城市去不了呢……再来一次罢：";
+					cin >> s;
+					if (s == ".")return;
+					console << s << endl;
+				}
+				Index = FindRegion(s);
+				OutputSpecific(Index);
+				sortByPriceDown(Index);
+				OutputSpecific(Index);
+				break;
+			case 3:
+				srand(time(0));
+				RandomRecommand();
+				RandomRecommand();
+				RandomRecommand();
+				break;
+			}
+		}
+
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				printSubMenu();
+				cin.get();
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
+		}
+	};
+	class train :public ReflectBase, DynamicCreator<train> {
+	private:
+		void printMenu() {
+			if (!tdata)
+				TrainDataLoad();
+			tdata = true;
+			console.ClearScreen();
+			console << "欢迎使用车票查询" << endl;
+			console << "1 - 查询站点\t2 - 查询列车\t3 - 查询车次" << endl << "请输入代号：";
+			freopen("CON", "r", stdin);
+			int ss = 0;
+			cin.clear();
+			cin >> ss;
+			while (ss < 1 || ss > 3) {
+				console << ss << endl;
+				console << "这↑里↓还没有被开发，再来一次吧：";
+				cin >> ss;
+			}
+			console << ss << endl;
+			string s, e;
+			int Index;
+			switch (ss) {
+			case 1:
+				console << "输入城市名：";
+				cin >> s;
+				console << s << endl;
+				Index = findStation(s);
+				StationList[Index]->outputInfo();
+				break;
+			case 2:
+				console << "输入车次号：";
+				cin >> s;
+				console << s << endl;
+				Index = findTrain(s);
+				if (Index == -1) {
+					console << "找不到您要查询的车次： " << s << " ,返回.";
+					return;
+				}
+				TrainList[Index]->outputBasicInfo();
+				TrainList[Index]->outputSeat();
+				TrainList[Index]->outputRoute();
+				break;
+			case 3:
+				console << "起点: ";
+				cin >> s;
+				console << s << " 终点： ";
+				cin >> e;
+				console << e << endl;
+				findResult(s, e);
+				cout << "按耗时最少排序" << endl;
+				sortResultFast();
+				outputResult();
+			}
+		}
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				printMenu();
+				cin.get();
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
+		}
+
+	};
+	class hotel :public ReflectBase, DynamicCreator<hotel> {
+	private:
+		void printSubMenu() {
+			console.ClearScreen();
+			if (!hdata)
+				HotelLoadData();
+			hdata = true;
+			console.ClearScreen();
+			console << "请输入您的目的地：";
+			string s;
+			cin >> s;
+			if (s == ".")return;
+			console << s << endl;
+			while (s != "北京" && s != "上海" && s != "广州") {
+				console << "兄啊您输入的城市去不了呢……再来一次罢：";
+				cin >> s;
+				if (s == ".")return;
+				console << s << endl;
+			}
+			console << "欢迎来到" << s << "，那么首先能告诉我你们有多少人吗？";
+			int n;
+			cin >> n;
+			console << n << endl;
+			while (n >= 50 || n <= 0) {
+				console << "你们是一个一个，一个一个一个……房客！（获取数据失败）";
+				cin >> n;
+				console << n << endl;
+			}
+			console << "嗯.." << n << "个人，那么要住几天呢：";
+			int k;
+			cin >> k;
+			console << k << endl;
+			while (k >= 20 || k <= 0) {
+				console << "你们是一个一个，一个一个一个……（获取数据失败）" << endl;
+				cin >> k;
+			}
+			findOption(s, n, k);
+			console << "入驻" << n << "人可供选择的有 " << totOption << " 家酒店：" << endl;
+			sortDefault();
+			for (int i = 1; i <= totOption; i++) {
+				console << endl;
+				HotelOptions[i].HotelPointer->printInfo();
+				console << "最低价格: " << HotelOptions[i].price << " ,详情请前往酒店前台问询" << endl;
+			}
+			return;
+		}
+	public:
+		virtual void Work() {
+			if (isLogin) {
+				printSubMenu();
+				cin.get();
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
+		}
+	};
 	class exit :public ReflectBase, DynamicCreator<exit> {
 	public:
 		exit() {}
@@ -64,7 +243,7 @@ namespace Reflect {
 			if (!isLogin) {
 				user.Login();
 				cin.get();
-				if(!user.getUser().empty())
+				if (!user.getUser().empty())
 					isLogin = true;
 			}
 			else
@@ -128,9 +307,9 @@ bool parseCommandline(const string & content) {
 		return true;
 	}
 	else {
-		if (size_t pos = b.find("loadimg") != string::npos) {
+		if (size_t pos = content.find("loadimg"); pos != string::npos) {
 			console.stopDrawingThread();
-			console.displayImage(console.string2wstring(b.substr(pos + 6)), COORD{ 233,233 });
+			console.displayImage(console.string2wstring(content.substr(pos + 8)), COORD{ 233,233 });
 			return true;
 		}
 		else if (b == "Reflect::test") {

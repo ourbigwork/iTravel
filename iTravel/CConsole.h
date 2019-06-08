@@ -132,6 +132,7 @@ namespace std{
 		CConsole& operator<<(std::ostream& (*)(std::ostream&));
 		tagRECT getCurrentWindowInfo();
 		HANDLE getCurrentConsoleHandle();
+		std::string UTF82ANSI(const std::string&);
 	};
 	extern CConsole console;
 }

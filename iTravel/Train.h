@@ -32,11 +32,13 @@ Train类 包括列车的基本信息 以及输出方式
 Station类 包括车站名以及一个timetable，保存所有经过该车站的列车
 
 */
-
 #include "pch.h"
 #include "CConsole.h"
+
 using namespace std;
 #undef Train
+
+
 /*
 
 这一段考虑自己重写Time类 后来想想还是不太重要
@@ -72,6 +74,7 @@ int MyTime::ThisYear = 2019;
 int MyTime::ThisMonth = 6;
 
 */
+
 struct viaStation {
 	int hour, minute;//时间 
 	string stationName;//车站名 
@@ -81,15 +84,18 @@ struct viaStation {
 		console << minute << ")";
 	}
 };
+
 //时间比较 返回 L<R 的 bool 值 
 bool cmpTime(viaStation &L, viaStation &R) {
 	if (L.hour != R.hour) return L.hour < R.hour;
 	else return L.minute < R.minute;
 }
+
 //名称比较 返回L<R 的 bool 值 
 bool cmpName(viaStation &L, viaStation &R) {
 	return L.stationName < R.stationName;
 }
+
 class Train {
 public:
 	int seat[3][2];//seat[i][0] 表示i+1等座位 还剩几张票 seat[i][1] 表示i+1等座位 要多少钱 
@@ -98,11 +104,15 @@ public:
 
 	//更改信息 
 	void changeInfo() {
-		cin >> TrainName;//console<<TrainName<<endl; 
+		cin >> TrainName;
+		TrainName = console.UTF82ANSI(TrainName);
+		//console<<TrainName<<endl; 
 		int len; cin >> len;//途径地个数，0,len-1 分别表示首发站和终点站
 		while (len--) {
 			viaStation temp;
 			cin >> temp.stationName >> temp.hour >> temp.minute;
+			temp.stationName = console.UTF82ANSI(temp.stationName);
+			//console << temp.stationName << endl;
 			route.push_back(temp);
 		}
 		for (int i = 0; i < 3; i++)
@@ -171,17 +181,21 @@ public:
 		}
 	}
 };
+
 vector<Station*> StationList;//车站总表 
+
 /*
 
 查找车站，返回InputName车站所在车站总表的下标(int)
 如果找不到返回-1
 */
+
 int findStation(string InputName) {
 	int i = StationList.size() - 1;
 	while (i >= 0 && StationList[i]->name != InputName) i--;
 	return i;
 }
+
 /*
 
 排序：对给定的Train* 的vector进行排序
@@ -195,6 +209,7 @@ void sortByTime(vector<Train*> &Array) {
 			if (!cmpTime(Array[j]->route[0], Array[j - 1]->route[0]))
 				swap(Array[j], Array[j - 1]);
 }
+
 /*
 
 添加一辆列车
@@ -227,7 +242,9 @@ G312
 4 3 2 1 3 4
 
 */
+
 vector<Train*> TrainList;//列车总表
+
 void addTrain() {
 	Train *temp = new Train;
 	temp->changeInfo();//读入车辆信息
@@ -247,24 +264,30 @@ void addTrain() {
 		}
 	}
 }
+
 //查找车次 返回下标 
 int findTrain(string InputS) {
 	int i = TrainList.size() - 1;
 	while (i >= 0 && TrainList[i]->TrainName != InputS) i--;
 	return i;
 }
+
 //方案结构 
 struct way {
 	Train* first;
-	Train* second;//如果无需换乘，则此项为nullptr
+	Train* second;//如果无需换乘，则此项为NULL
 	int begTime, endTime;//发时，结束时 
 };
 vector<way> Result;
-void findResult() {
+
+void findResult(const string & s, const string & e) {
 	while (!Result.empty()) Result.pop_back();//置为空
 	string Start, End;//起点终点
+	Start = s, End = e;
 	int StartIndex, EndIndex;
-	cin >> Start >> End;
+	//cin >> Start >> End;
+	//Start = console.UTF82ANSI(Start);
+	//End = console.UTF82ANSI(End);
 	//不考虑换乘
 	for (int i = 0; i < TrainList.size(); i++) {
 		StartIndex = TrainList[i]->findRoute(Start);
@@ -276,7 +299,7 @@ void findResult() {
 		temp.begTime = TrainList[i]->route[StartIndex].hour * 60 + TrainList[i]->route[StartIndex].minute;
 		temp.endTime = TrainList[i]->route[EndIndex].hour * 60 + TrainList[i]->route[EndIndex].minute;
 		temp.first = TrainList[i];
-		temp.second = nullptr;
+		temp.second = NULL;
 		Result.push_back(temp);
 	}
 	//考虑换乘
@@ -310,30 +333,33 @@ void findResult() {
 		}//if-q
 	}//for-i
 }
+
 //按发时最早排序 
 void sortResultEarly() {
 	for (int i = 0; i < Result.size(); i++)
 		for (int j = 1; j < Result.size(); j++)
 			if (Result[j].begTime < Result[j - 1].begTime) swap(Result[j], Result[j - 1]);
 }
+
 //按耗时最少排序 
 void sortResultFast() {
 	for (int i = 0; i < Result.size(); i++)
 		for (int j = 1; j < Result.size(); j++)
 			if (Result[j].endTime - Result[j].begTime < Result[j - 1].endTime - Result[j - 1].begTime) swap(Result[j], Result[j - 1]);
 }
+
 //输出结果
 void outputResult() {
 	console << endl << "共为您查到" << Result.size() << "条信息" << endl;
 	for (int i = 0; i < Result.size(); i++) {
-		if (Result[i].second == nullptr) {
+		if (Result[i].second == NULL) {
 			console << Result[i].first->TrainName << "(直达)" << endl;
 			Result[i].first->outputSeat();
 			console << endl;
 		}
 		else {
 			//换乘
-			console << Result[i].first->TrainName << "换乘 => " << Result[i].second->TrainName << endl;
+			console << Result[i].first->TrainName << "(换乘) => " << Result[i].second->TrainName << endl;
 			Result[i].first->outputSeat();
 			Result[i].second->outputSeat();
 			console << endl;
@@ -341,3 +367,13 @@ void outputResult() {
 	}
 }
 
+//读取数据
+void TrainDataLoad() {
+	int n;//总列车数
+	//openfile
+	freopen(".\\TrainData.txt", "r", stdin);
+	cin >> n;
+	while (n--)
+		addTrain();
+	cin.clear();
+}
