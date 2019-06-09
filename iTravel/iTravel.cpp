@@ -196,11 +196,96 @@ namespace Reflect {
 				console << "请登录后使用此功能！" << endl;
 		}
 	};
+	//class 命令名:public ReflectBase,DynamicCreator<命令名>
+
 	class exit :public ReflectBase, DynamicCreator<exit> {
 	public:
 		exit() {}
 		virtual void Work() {
 			::exit(0);
+		}//必须有的
+	};
+	class addfav :public ReflectBase, DynamicCreator<addfav> {
+	public:
+		addfav() {}
+		virtual void Work() {
+			if (isLogin) {
+				Customer* p = reinterpret_cast<Customer*>(&user);
+				p->ilike();
+				cin.get();
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
+		}
+	};
+	class showfav :public ReflectBase, DynamicCreator<showfav> {
+	public:
+		showfav() {}
+		virtual void Work() {
+			if (isLogin) {
+				Customer* p = reinterpret_cast<Customer*>(&user);
+				p->showlike();
+				cin.get();
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
+		}
+	};
+	class reply :public ReflectBase, DynamicCreator<reply> {
+	public:
+		reply() {}
+		virtual void Work() {
+			if (isLogin) {
+				if (user.isAdmin()) {
+					Admin* p = reinterpret_cast<Admin*>(&user);
+					p->reply();
+				}
+				else {
+					console << "只有管理员才可以回复！" << endl;
+				}
+			}
+			else {
+				console << "请登录后使用此功能！" << endl;
+			}
+			cin.get();
+		}
+	};
+	class feedback :public ReflectBase, DynamicCreator<feedback> {
+	public:
+		feedback() {}
+		virtual void Work() {
+			if (isLogin) {
+				if (!user.isAdmin()) {
+					Customer* p = reinterpret_cast<Customer*>(&user);
+					p->feedback();
+				}
+				else {
+					console << "我 反 馈 我 自 己（失败）" << endl;
+				}
+			}
+			else {
+				console << "请登录后使用此功能！" << endl;
+			}
+			cin.get();
+		}
+	};
+	class readback :public ReflectBase, DynamicCreator<readback> {
+	public:
+		readback() {}
+		virtual void Work() {
+			if (isLogin) {
+				if (!user.isAdmin()) {
+					Customer* p = reinterpret_cast<Customer*>(&user);
+					p->read();
+				}
+				else {
+					console << "管理员读个毛啊！" << endl;
+				}
+			}
+			else {
+				console << "请登录后使用此功能！" << endl;
+			}
+			cin.get();
 		}
 	};
 	class showme :public ReflectBase, DynamicCreator<showme> {
@@ -211,7 +296,7 @@ namespace Reflect {
 				console.stopDrawingThread();
 				const string filenames[]{ ".\\buxingjie.dat",".\\changlong.dat",
 					".\\guangzhouta.dat",".\\kuiyuan.dat",".\\shamian.dat" };
-				int i = rand()%4;
+				int i = rand() % 4;
 				console.displayImage(console.string2wstring(filenames[i]), COORD{ 0,0 });
 			}
 			else
@@ -281,6 +366,13 @@ namespace Reflect {
 				console << "兄啊你还没登录注销个毛啊（" << endl;
 		}
 	};
+	class help :public ReflectBase, DynamicCreator<help> {
+	public:
+		virtual void Work() {
+			console.ClearScreen();
+			console << cHelp;
+		}
+	};
 	class about :public ReflectBase, DynamicCreator<about> {
 	public:
 		about() {}
@@ -322,27 +414,12 @@ bool parseCommandline(const string & content) {
 		p->Work();
 		return true;
 	}
-	else {
-		if (size_t pos = content.find("loadimg"); pos != string::npos) {
-			console.stopDrawingThread();
-			console.displayImage(console.string2wstring(content.substr(pos + 8)), COORD{ 233,233 });
-			return true;
-		}
-		else if (b == "Reflect::test") {
-			LoadData();
-			OutputRegion();
-
-			return true;
-		}
-	}
-	//TODO:more commands here...
 	return false;
 }
 
 int main(void) {
 	isLogin = false;
 	console.init(BACKGROUND_BLUE, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-	//console.displayImage(L".\\logo.png",COORD{0,0});
 	console << Welcome;
 	string content;
 	while (getline(cin, content)) {

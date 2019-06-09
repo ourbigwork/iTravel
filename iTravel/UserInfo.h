@@ -69,6 +69,9 @@ public:
 	void Regist();
 	void Change();
 	void Logout();
+	bool isAdmin()const{
+		return type == 2;
+	}
 	std::string getUser()const { return Username; }
 protected:
 	std::string Phone, Username, password;

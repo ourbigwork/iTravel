@@ -5,7 +5,7 @@ User_like like;
 User_like readd;
 FeedbackWords myfeedback;
 Replywords myreply;
-int static hadReadFeedback;  //相当于文件的指针
+int static hadReadFeedback = 0;  //相当于文件的指针
 User::User(const std::string & Datafilename) {
 	file.ReopenFile(Datafilename);
 }
@@ -73,6 +73,7 @@ void User::Login() {
 	this->password = password;
 	this->Phone = phone;
 	this->Username = username;
+	this->type = ttype;
 	return;
 }
 void User::Show() {
@@ -181,10 +182,10 @@ void User::Change() {
 	console << "请输入电话号码:";
 	cin >> phone;
 	console << phone << endl;
-	console << "请输入密码（忘记密码请留空）：";
+	console << "请输入新密码：";
 	password1 = console.InputPassword();
 	if (password1.empty()) {
-		console << "无法验证身份！" << endl;
+		console << "新密码不能为空！" << endl;
 		return;
 	}
 	console << "请再次输入密码：";
@@ -198,12 +199,12 @@ void User::Change() {
 	Phone = phone;
 	console << "修改成功！" << endl;
 	console << "修改后的信息：" << endl;
-	console << "用户名" << Username << '\n' << "手机号：" << phone << '\n' << "密码：" << password1 << endl;
+	console << "用户名：" << Username << endl << "手机号：" << phone << endl << "密码：" << password1 << endl;
 }
 
 void User::Logout() {
 	Phone.clear();
-	Username.clear(); 
+	Username.clear();
 	password.clear();
 	return;
 }
@@ -217,21 +218,19 @@ void Customer::judgelikecin(User_like&p)
 	using namespace std;
 	fstream userlike;
 	string file_like_name;
-	file_like_name = Username + "的收藏夹";
-	userlike.open(".\\" + file_like_name + ".dat", ios::in | ios::binary);
+	file_like_name = ".\\" + Username + ".fav";
+	userlike.open(file_like_name, ios_base::in | ios_base::binary);
 	User_like tmp;
 	int flag = 0;
-	while (userlike >> tmp)
-	{
+	while (userlike >> tmp) {
 		if ((tmp.What == p.What) && (tmp.Where == p.Where))
 			flag = 1;
 	}
 	userlike.close();
 	if (flag)
 		console << "已添加！" << endl;
-	else
-	{
-		userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::binary | ios::app);
+	else {
+		userlike.open(file_like_name, ios_base::out | ios_base::binary | ios_base::app);
 		userlike << p;
 		console << "添加成功！" << endl;
 		userlike.close();
@@ -242,25 +241,28 @@ void Customer::ilike() {
 	console.ClearScreen();
 	fstream userlike;
 	string file_like_name;
-	file_like_name = Username + "的收藏夹";
+	file_like_name = ".\\" + Username + ".fav";
 	string getwhat, getwhere;
 								 //缺个获得景点信息的函数，把地点什么的给上面那行的两个变量
-								 
-	userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::in | ios::binary | ios::app);
+	console << "您喜欢这里吗？麻烦您输入下您喜欢什么吧：";
+	cin >> getwhat;
+	console << "好的，您喜欢" << getwhat << ", 那么它在哪呢？" << endl;
+	cin >> getwhere;
+	console << "我明白了！" << endl;
+	userlike.open(file_like_name, ios_base::out | ios_base::in | ios_base::binary | ios_base::app);
 	like.What = getwhat;
 	like.Where = getwhere;
 	judgelikecin(like);//查重判断是否加入
-	                      //close在函数里了
+						  //close在函数里了
 }
-
 void Customer::showlike() {
 	using namespace std;
 	console.ClearScreen();
 	console << "我的收藏夹:" << endl;
 	fstream userlike;
 	string file_like_name;
-	file_like_name = Username + "的收藏夹";
-	userlike.open("d:\\" + file_like_name + ".dat", ios::out | ios::in | ios::binary);
+	file_like_name = ".\\" + Username + ".fav";
+	userlike.open(file_like_name, ios_base::out | ios_base::in | ios_base::binary);
 	userlike.seekg(0);
 	while (userlike >> readd)
 	{
@@ -268,15 +270,13 @@ void Customer::showlike() {
 	}
 	userlike.close();
 }
-
 void Customer::comment() {
 	using namespace std;
 	console.ClearScreen();
 	string words;
 	cin >> words;
-	console << words;       //如何展示在相关页面上啊
+	console << words;
 }
-
 void Customer::feedback() {
 	using namespace std;
 	console.ClearScreen();
@@ -284,24 +284,23 @@ void Customer::feedback() {
 	string word;
 	console << "请写下您的反馈" << endl;
 	cin >> word;
-	console << word;			
+	console << word;
 	myfeedback.customername = Username;
 	myfeedback.words = word;
 	string file_feedback_name;
-	file_feedback_name = "用户反馈";  //把评论从尾部写入文件
-	feedbackfile.open("d:\\" + file_feedback_name + ".dat", ios::out  | ios::binary | ios::app);
+	file_feedback_name = ".\\FEEDBACK";  //把评论从尾部写入文件
+	feedbackfile.open(file_feedback_name, ios_base::out | ios_base::binary | ios_base::app);
 	feedbackfile << myfeedback;
 	feedbackfile.close();
 }
-
 void Customer::read() {
 	using namespace std;
 	fstream replyfile;
 	string word;
 	string file_reply_name;
 	Replywords outTmp;
-	file_reply_name = Username + "收到的回复";
-	replyfile.open("d:\\" + file_reply_name + ".dat", ios::in | ios::binary);
+	file_reply_name = ".\\" + Username + ".reply";
+	replyfile.open(file_reply_name, ios_base::in | ios_base::binary);
 	console << "尊敬的" << Username << endl;
 	while (replyfile >> outTmp)
 	{
@@ -312,8 +311,6 @@ void Customer::read() {
 //------------------------------------------------------------------------------------------------
 void Admin::changeinformation() {
 	using namespace std;
-	
-
 }
 void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 {
@@ -321,8 +318,9 @@ void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 	int readFlag = 0;
 	fstream feedbackfile;
 	FeedbackWords inTmp;
-	int countt=0;
-	feedbackfile.open("d:\\用户反馈.dat", ios::in | ios::binary);
+	int countt = 0;
+	string file_feedback_name = ".\\FEEDBACK";
+	feedbackfile.open(file_feedback_name, ios_base::in | ios_base::binary);
 	while ((feedbackfile >> inTmp) && (!readFlag))    //reflag用来每次只操作一次
 	{
 		if (countt == hadReadFeedbackk)
@@ -336,8 +334,8 @@ void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 			console << outTmpp.customername << endl;
 			console << outTmpp.words << endl;
 
-			string file_reply_name = outTmpp.customername + "收到的回复";
-			replyfile.open("d:\\" + file_reply_name + ".dat", ios::in | ios::binary| ios::app);
+			string file_reply_name = ".\\" + outTmpp.customername + ".reply";
+			replyfile.open(file_reply_name, ios_base::in | ios_base::binary | ios_base::app);
 			console << "输入您的回复:" << endl;
 			outTmp.customername = outTmpp.customername;
 			cin >> outTmp.words;
@@ -350,14 +348,13 @@ void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 		++countt;
 	}
 }
-
 void Admin::reply() {
 	using namespace std;
 	fstream feedbackfile;
 	fstream replyfile; //feedbackfile打开来读，写入reply
 	string file_feedback_name; string cname; //获得用户名
-	file_feedback_name = "用户反馈";
-	feedbackfile.open("d:\\" + file_feedback_name + ".dat", ios::out | ios::in | ios::binary);
+	file_feedback_name = ".\\FEEDBACK";
+	feedbackfile.open(file_feedback_name, ios_base::out | ios_base::in | ios_base::binary);
 	FeedbackWords input;
 	int count = 0;
 	while (feedbackfile >> input)
