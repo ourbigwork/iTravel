@@ -152,7 +152,9 @@ namespace Reflect {
 			if (s == ".")return;
 			console << s << endl;
 			while (s != "北京" && s != "上海" && s != "广州") {
-				console << "兄啊您输入的城市去不了呢……再来一次罢：";
+				fuzzySearch(s);
+				outputFuzzy();
+				console << "兄啊……再来一次罢：";
 				cin >> s;
 				if (s == ".")return;
 				console << s << endl;
@@ -199,6 +201,21 @@ namespace Reflect {
 		exit() {}
 		virtual void Work() {
 			::exit(0);
+		}
+	};
+	class showme :public ReflectBase, DynamicCreator<showme> {
+	public:
+		showme() {}
+		virtual void Work() {
+			if (isLogin) {
+				console.stopDrawingThread();
+				const string filenames[]{ ".\\buxingjie.dat",".\\changlong.dat",
+					".\\guangzhouta.dat",".\\kuiyuan.dat",".\\shamian.dat" };
+				int i = rand()%4;
+				console.displayImage(console.string2wstring(filenames[i]), COORD{ 0,0 });
+			}
+			else
+				console << "请登录后使用此功能！" << endl;
 		}
 	};
 	class whoami :public ReflectBase, DynamicCreator<whoami> {

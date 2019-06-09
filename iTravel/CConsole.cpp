@@ -17,13 +17,17 @@ namespace std {
 	void CConsole::init(short inputbackgroundColor = BACKGROUND_BLUE, short inputforegroundColor = 0) {
 		background = __createNewScreen(),
 			foreground = __createNewScreen();
-		SetConsoleTitleA(ConsoleTitle.c_str());
-		SetConsoleActiveScreenBuffer(foreground);
-		ResizeWindow();
-		putCursorToEnd();
-		setColorInput(inputbackgroundColor, inputforegroundColor);
+		//创建两个缓冲区
+
+		SetConsoleTitleA(ConsoleTitle.c_str());//调整控制台标题
+		SetConsoleActiveScreenBuffer(foreground);//设置活动缓冲区
+		ResizeWindow();//调整窗口大小，隐藏右侧滚动条
+		putCursorToEnd();//将光标放到最底部
+
+		setColorInput(inputbackgroundColor, inputforegroundColor);//调整输入区域的颜色为蓝底白字
 		makeColorfulInput();
-		WriteConsoleA(foreground, ">", 1, nullptr, nullptr);
+
+		WriteConsoleA(foreground, ">", 1, nullptr, nullptr);//在控制台底部输出'>'符号表示接受输入
 	}
 	tagRECT CConsole::getCurrentWindowInfo() {
 		HWND hwnd = GetConsoleWindow();
@@ -46,27 +50,31 @@ namespace std {
 	}
 	void CConsole::makeColorfulInput() {
 		setColorInput(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED, BACKGROUND_BLUE);
+		//调整背景色为蓝色，前景色为白色的属性设置
 		//using string;
 		CONSOLE_SCREEN_BUFFER_INFO info;
 		GetConsoleScreenBufferInfo(foreground, &info);
-		int t = info.srWindow.Right - info.srWindow.Left - 1;
+		int t = info.srWindow.Right - info.srWindow.Left - 1;//获得窗口宽度
 		string tmp(" ");
-		tmp.append(t, ' ');
-		SetConsoleTextAttribute(foreground, InputBackground);
-		WriteConsoleA(foreground, tmp.c_str(), tmp.length(), nullptr, nullptr);
-		putCursorToEnd();
+		tmp.append(t, ' ');//给底端填充空白
+		SetConsoleTextAttribute(foreground, InputBackground);//设置背景颜色
+		WriteConsoleA(foreground, tmp.c_str(), tmp.length(), nullptr, nullptr);//写出去
+		putCursorToEnd();//光标放到末端
 	}
 	void CConsole::updateScreen() {
 		SetConsoleActiveScreenBuffer(background);
 		ResizeWindow();
 		CloseHandle(foreground);
 		foreground = background;
-
+		//调整背景到前景
 		__setDefaultColor();
-
+		//新背景
 		background = __createNewScreen();
 		putCursorToEnd();
+		//光标放到底端
 		makeColorfulInput();
+		//初始化底端的蓝色
+		//写>符号
 		WriteConsoleA(foreground, ">", 1, nullptr, nullptr);
 	}
 	void CConsole::WriteText(const string & out) {
@@ -143,8 +151,8 @@ namespace std {
 		do {
 			if (!tContinueDrawing)
 				break;
-			gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y);
-			//gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y, img.GetWidth(), img.GetHeight());
+			//gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y);
+			gp.DrawImage(&img, WhereTodraw.X, WhereTodraw.Y, img.GetWidth(), img.GetHeight());
 			::Sleep(500);
 		} while (tContinueDrawing);
 		updateScreen();

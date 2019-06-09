@@ -307,7 +307,7 @@ bool deleteCity(string InputS) {
 
 */
 void HotelLoadData() {
-	freopen(".\\HotelData.txt", "r", stdin);
+	freopen(".\\HotelData.dat", "r", stdin);
 	string InputS;
 	int totCity = 0; cin >> totCity;//地区数
 	while (totCity--) {
@@ -504,7 +504,7 @@ bool cmp_sMark(fuzzyNode L, fuzzyNode R) {
 double calcSimilarity(string L, string R) {
 	//对中文处理
 	int Ll = L.length(), Rl = R.length();
-	//cout<<Ll<<' '<<Rl<<endl;
+	//console<<Ll<<' '<<Rl<<endl;
 	double w1 = 0.65, w2 = 0.35;
 	double totM = 0.0;
 	for (int i = 0; i * 2 < Ll; i++) {//L匹配串 R模式串 
@@ -513,14 +513,14 @@ double calcSimilarity(string L, string R) {
 		for (int j = 0; j * 2 < Rl; j++) {
 			int j1 = (int)R[j * 2], j2 = (int)R[j * 2 + 1];
 			double dif = w1 * abs(i1 - j1) + w2 * abs(i2 - j2);
-			//cout<<i1<<' '<<i2<<' '<<j1<<' '<<j2<<endl;
+			//console<<i1<<' '<<i2<<' '<<j1<<' '<<j2<<endl;
 			double mat = pow(0.6, dif);
 			maxMatch = mat > maxMatch ? mat : maxMatch;
-		}//cout<<maxMatch<<endl;
+		}//console<<maxMatch<<endl;
 		totM += maxMatch;
 	}
 	totM = totM * 2 / (double)Ll;//消除长度影响
-	//cout<<L<<' '<<R<<' '<<totM<<endl;cout<<"======"<<endl;
+	//console<<L<<' '<<R<<' '<<totM<<endl;console<<"======"<<endl;
 	return totM;
 }
 
@@ -543,11 +543,11 @@ void fuzzySearch(string InputS) {
 }
 
 void outputFuzzy() {
-	cout << "您是不是在查找：";
+	console << "您是不是在查找：";
 	fuzzyRes[0].Node->printInfo();
-	cout << endl << "搜索结果(相似度前10):" << endl;
+	console << endl << "搜索结果(相似度前10):" << endl;
 	for (int i = 0; i < 10; i++) {
-		cout << fuzzyRes[i].Node->name << " 相似度: " << fuzzyRes[i].sMark << endl;
+		console << fuzzyRes[i].Node->name << " 相似度: " << fuzzyRes[i].sMark << endl;
 	}
 }
 

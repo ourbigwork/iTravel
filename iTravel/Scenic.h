@@ -107,7 +107,7 @@ void OutLoad() {
 void LoadData() {
 	// Openfile;
 //	OutLoad();
-	freopen(".\\ScenicData.txt","r",stdin);
+	freopen(".\\ScenicData.dat","r",stdin);
 	cin >> ::Region->tot_Region;
 	for (int i = 1; i <= ::Region->tot_Region; i++) {
 		RegionClass *tempRegion = new RegionClass();

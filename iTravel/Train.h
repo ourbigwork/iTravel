@@ -371,7 +371,7 @@ void outputResult() {
 void TrainDataLoad() {
 	int n;//总列车数
 	//openfile
-	freopen(".\\TrainData.txt", "r", stdin);
+	freopen(".\\TrainData.dat", "r", stdin);
 	cin >> n;
 	while (n--)
 		addTrain();

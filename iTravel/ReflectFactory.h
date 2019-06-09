@@ -52,7 +52,7 @@ namespace Reflect {
 	public:
 		ReflectBase() {}
 		virtual ~ReflectBase() {}
-		virtual void Test(){}
+		//virtual void Test(){}
 		virtual void Work(){}
 	};
 	template<typename... Targs>
@@ -117,6 +117,7 @@ namespace Reflect {
 		//virtual ~DynamicCreator() {}
 		static Register mRegister;
 	};
+	//静态对象Register的实例化
 	template<typename T, typename...Args>
 	typename DynamicCreator<T,Args...>::Register 
 		DynamicCreator<T, Args...>::mRegister;

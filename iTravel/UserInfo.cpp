@@ -218,7 +218,7 @@ void Customer::judgelikecin(User_like&p)
 	fstream userlike;
 	string file_like_name;
 	file_like_name = Username + "µÄÊÕ²Ø¼Ð";
-	userlike.open("d:\\" + file_like_name + ".dat", ios::in | ios::binary);
+	userlike.open(".\\" + file_like_name + ".dat", ios::in | ios::binary);
 	User_like tmp;
 	int flag = 0;
 	while (userlike >> tmp)

@@ -25,7 +25,6 @@
 	使用说明：
 		构造函数接受新的窗口标题；同时初始化gdiplus.如果失败，它会抛出std::runtime_error异常
 		接着使用init()初始化输入区域的前景色和背景色，默认蓝底白字
-
 	-------------------------------------------------------------------------------------------
 	函数说明：
 	getCurrentWindowInfo()		返回当前窗口的矩形信息
@@ -44,6 +43,9 @@
 	__string2wstring()			宽窄字符串转换函数
 	__wstring2string()			宽窄字符串转换函数
 	operator<<()				把其他类型格式化为字符串后调用WriteText()
+	UTF82ANSI()					UTF8转ANSI编码（用于中文字符）
+	Dialog()					在指定位置绘制矩形框
+	InputPassword()				实现接收密码的遮盖输入
 */
 namespace std{
 	class CConsole {
@@ -54,10 +56,12 @@ namespace std{
 	private:
 		//多线程部分
 		void __displayImageThread(HWND hwnd);
+
 		std::condition_variable flag;
 		std::mutex lockk;
 		std::unique_lock<std::mutex> tlock;
 		std::thread drawThread;
+
 		bool tContinueDrawing = true,
 			isLastThreadRunning = false;
 		//gdiplus
