@@ -525,6 +525,7 @@ double calcSimilarity(string L, string R) {
 }
 
 void fuzzySearch(string InputS) {
+	while(!fuzzyRes.empty()) fuzzyRes.pop_back(); 
 	CityClass *CIndex = CityList;
 	double Match = 0;
 	while (CIndex != NULL) {//枚举城市

@@ -58,6 +58,23 @@ struct Replywords {
 };
 extern Replywords myreply;
 
+struct Commentwords {
+	std::string customername;
+	std::string words;
+	friend std::istream& operator>>(std::istream& in, Commentwords&p)
+	{
+		in >> p.customername >> p.words;
+		return in;
+	}
+	friend std::ostream& operator<<(std::ostream& out, const Commentwords& p)
+	{
+		out << p.customername << std::endl;
+		out << p.words << std::endl;
+		return out;
+	}
+};
+extern Commentwords mycomment;
+
 //用户类
 class User {
 public:
@@ -86,6 +103,7 @@ public:
 	void ilike();        //加入心愿单,要对文档操作，把添加的东西转换成代号写入文档
 	void showlike();     //显示心愿单，要对文档操作，把文档里的代号读取出来,变成可视的
 	void comment();      //发表评论，也要对文档操作。把写的东西存入文档
+	void readcomment();
 	void feedback();     //向管理员反馈问题
 	void read();         //查看管理员的回复
 protected:
