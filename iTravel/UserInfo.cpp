@@ -246,6 +246,7 @@ void Customer::ilike() {
 								 //缺个获得景点信息的函数，把地点什么的给上面那行的两个变量
 	console << "您喜欢这里吗？麻烦您输入下您喜欢什么吧：";
 	cin >> getwhat;
+	console << getwhat << endl;
 	console << "好的，您喜欢" << getwhat << ", 那么它在哪呢？" << endl;
 	cin >> getwhere;
 	console << "我明白了！" << endl;

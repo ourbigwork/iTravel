@@ -38,18 +38,18 @@ inline const char *cTitle = "iTravel v1.0";
 inline const char *cHelp = R"(
                            iTravel v1.0命令指北
 ==========================+=============================================+
-  *	使用前请您先登录！没有账号先注册！
-  *	regist 注册             login 登录
-  *	logout 注销             exit 退出
-  *	about 关于信息			cls 清屏
-  *	help 显示这个帮助信息     whoami 我是谁
-  * change 改密码
-  * showme 随机显示张图片
-  *	readback 普通用户读管理员回复信息  feedback 普通用户反馈信息
-  *	reply 管理员回复信息
-  *	showfav 我的收藏夹  addfav 添加收藏
-  *	hotel 订酒店  train 买车票
-  *	scenic 查景点
+  *		使用前请您先登录！没有账号先注册！
+  *		regist 注册	login 登录
+  *		logout 注销	exit 退出
+  *		about 关于信息	cls 清屏
+  *		help 显示这个帮助信息	whoami 我是谁
+  *		change 改密码
+  *		showme 随机显示张图片
+  *		readback 普通用户读管理员回复信息	feedback 普通用户反馈信息
+  *		reply 管理员回复信息
+  *		showfav 我的收藏夹	addfav 添加收藏
+  *		hotel 订酒店	train 买车票
+  *		scenic 查景点
 ==========================+=============================================+
 )";
 //inline const char *currentPath = ".\\", *userDataFileName = ".\\userData.dat",
