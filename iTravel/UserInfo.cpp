@@ -278,6 +278,21 @@ void Customer::comment() {
 	console << words << endl;
 	console << "OK!" << endl;
 }
+void Customer::readcomment() {
+	using namespace std;
+	console.ClearScreen();
+	console << "评论区（展示评论）：" << endl;
+	fstream commentfile;
+	commentfile.open(".\\评论.dat", ios::out | ios::in | ios::binary);
+	commentfile.seekg(0);
+	while (commentfile >> mycomment)
+	{
+		console << mycomment.customername << endl;
+		console << mycomment.words << endl;
+		console << endl;
+	}
+	commentfile.close();
+}
 void Customer::feedback() {
 	using namespace std;
 	console.ClearScreen();
@@ -294,7 +309,8 @@ void Customer::feedback() {
 	feedbackfile << myfeedback;
 	feedbackfile.close();
 }
-void Customer::read() {
+void Customer::read() 
+{
 	using namespace std;
 	fstream replyfile;
 	string word;
@@ -349,7 +365,8 @@ void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 		++countt;
 	}
 }
-void Admin::reply() {
+void Admin::reply() 
+{
 	using namespace std;
 	fstream feedbackfile;
 	fstream replyfile; //feedbackfile打开来读，写入reply
@@ -365,9 +382,9 @@ void Admin::reply() {
 	while (hadReadFeedback < totalFeedback)
 	{
 		readAndWrite(hadReadFeedback);
+		console << endl;
 	}
 	feedbackfile.close();
-
 }
 
 
