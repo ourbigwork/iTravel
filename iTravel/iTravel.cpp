@@ -23,10 +23,11 @@ namespace Reflect {
 			sdataload = true;
 			console.ClearScreen();
 			console << "好康的……是新景点噢？" << endl <<
-				"1 - 输出全部景点\t2 - 查询目的地\t3 - 随机推荐\n" << "请输入命令代号：";
+				"1 - 输出全部景点\t2 - 查询目的地\t3 - 随机推荐\t4 - 评价一番\n" << "请输入命令代号：";
 			int k;
+			cin.clear();
 			cin >> k;
-			while (k < 1 || k > 3) {
+			while (k < 1 || k > 4) {
 				console << k << endl;
 				console << "这↑里↓还没有被开发，再来一次吧：";
 				cin >> k;
@@ -34,6 +35,7 @@ namespace Reflect {
 			console << k << endl;
 			string s;
 			RegionClass * Index;
+			Customer* p = reinterpret_cast<Customer*>(&user);
 			switch (k) {
 			case 1:
 				OutputRegion();
@@ -60,6 +62,9 @@ namespace Reflect {
 				RandomRecommand();
 				RandomRecommand();
 				break;
+			case 4:
+				p->comment();
+				break;
 			}
 		}
 
@@ -81,12 +86,13 @@ namespace Reflect {
 			tdata = true;
 			console.ClearScreen();
 			console << "欢迎使用车票查询" << endl;
-			console << "1 - 查询站点\t2 - 查询列车\t3 - 查询车次" << endl << "请输入代号：";
+			console << "1 - 查询站点\t2 - 查询列车\t3 - 查询车次\t4 - 评论一番吧" << endl << "请输入代号：";
 			freopen("CON", "r", stdin);
 			int ss = 0;
 			cin.clear();
 			cin >> ss;
-			while (ss < 1 || ss > 3) {
+			Customer* p = reinterpret_cast<Customer*>(&user);
+			while (ss < 1 || ss > 4) {
 				console << ss << endl;
 				console << "这↑里↓还没有被开发，再来一次吧：";
 				cin >> ss;
@@ -125,6 +131,10 @@ namespace Reflect {
 				cout << "按耗时最少排序" << endl;
 				sortResultFast();
 				outputResult();
+				break;
+			case 4:
+				p->comment();
+				break;
 			}
 		}
 	public:

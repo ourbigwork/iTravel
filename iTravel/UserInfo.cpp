@@ -275,7 +275,8 @@ void Customer::comment() {
 	console.ClearScreen();
 	string words;
 	cin >> words;
-	console << words;
+	console << words << endl;
+	console << "OK!" << endl;
 }
 void Customer::feedback() {
 	using namespace std;
