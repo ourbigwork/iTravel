@@ -46,6 +46,7 @@ inline const char *cHelp = R"(
   *		change 改密码
   *		showme 随机显示张图片
   *		readback 普通用户读管理员回复信息	feedback 普通用户反馈信息
+  *		comment 阅读评论
   *		reply 管理员回复信息
   *		showfav 我的收藏夹	addfav 添加收藏
   *		hotel 订酒店	train 买车票

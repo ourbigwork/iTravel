@@ -5,6 +5,7 @@ User_like like;
 User_like readd;
 FeedbackWords myfeedback;
 Replywords myreply;
+Commentwords mycomment;
 int static hadReadFeedback = 0;  //相当于文件的指针
 User::User(const std::string & Datafilename) {
 	file.ReopenFile(Datafilename);
@@ -277,14 +278,21 @@ void Customer::comment() {
 	string words;
 	cin >> words;
 	console << words << endl;
-	console << "OK!" << endl;
+	fstream commentfile;
+	commentfile.open(".\\comment.dat", ios_base::out | ios_base::in | ios_base::binary | ios_base::app);
+	commentfile.seekg(0);
+	mycomment.customername = this->Username;
+	mycomment.words = words;
+	commentfile << mycomment;
+	commentfile.close();
+	console << "感谢您的评论！" << endl;
 }
 void Customer::readcomment() {
 	using namespace std;
 	console.ClearScreen();
 	console << "评论区（展示评论）：" << endl;
 	fstream commentfile;
-	commentfile.open(".\\评论.dat", ios::out | ios::in | ios::binary);
+	commentfile.open(".\\comment.dat", ios_base::out | ios_base::in | ios_base::binary | ios_base::app);
 	commentfile.seekg(0);
 	while (commentfile >> mycomment)
 	{
@@ -310,7 +318,7 @@ void Customer::feedback() {
 	feedbackfile << myfeedback;
 	feedbackfile.close();
 }
-void Customer::read() 
+void Customer::read()
 {
 	using namespace std;
 	fstream replyfile;
@@ -366,7 +374,7 @@ void readAndWrite(int &hadReadFeedbackk) //管理员的读写操作
 		++countt;
 	}
 }
-void Admin::reply() 
+void Admin::reply()
 {
 	using namespace std;
 	fstream feedbackfile;

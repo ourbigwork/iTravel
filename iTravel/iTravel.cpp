@@ -207,7 +207,18 @@ namespace Reflect {
 		}
 	};
 	//class 命令名:public ReflectBase,DynamicCreator<命令名>
-
+	class comment :public ReflectBase, DynamicCreator<comment> {
+	public:
+		comment() {}
+		virtual void Work() {
+			if(isLogin){
+				Customer* p = reinterpret_cast<Customer*>(&user);
+				p->readcomment();
+				cin.get();
+			}else
+				console << "请登录后使用此功能！" << endl;
+		}
+	};
 	class exit :public ReflectBase, DynamicCreator<exit> {
 	public:
 		exit() {}
